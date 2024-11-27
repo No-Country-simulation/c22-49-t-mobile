@@ -5,7 +5,7 @@ import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmail
 import { IcreateUserParams } from "./types";
 import axios from "axios";
 
-const BACKEND_URL_BASE = "http://localhost:3000";
+const BACKEND_URL_BASE = "http://localhost:3000/api";
 
 export const useAuthUser = () => {
 
@@ -14,7 +14,7 @@ export const useAuthUser = () => {
         return useMutation({
             mutationKey: ["syncBackend"],
             mutationFn: async ({ path, token }: { path: string; token: string }) => {
-                await axios.post(`https://tu-backend.com/api${path}`, { token });
+                await axios.post(`${BACKEND_URL_BASE}${path}`, { token });
             },
             onError(error) {
                 console.error("Error al sincronizar con el backend:", error);
@@ -74,7 +74,7 @@ export const useAuthUser = () => {
                             router.push("/auth/login");
                         },
                     }
-                );       
+                );
             },
             onError(error, variables) {
                 console.log("error", error)
