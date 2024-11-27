@@ -3,10 +3,12 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import "./global.css";
+import { Provider } from '@/ui';
+import { useSessionUser } from '@/hooks/useUserSession/useUserSession';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -16,23 +18,36 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
+  const { loading } = useSessionUser()
+  const isLoggedIn = false
+  const [isAppReady, setIsAppReady] = useState(false); // Añadir estado de app lista
+
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    if (loaded && !loading) {
+      SplashScreen.hideAsync(); // Ocultar SplashScreen solo cuando esté listo
+      setIsAppReady(true); // Establecer la app como lista
     }
-  }, [loaded]);
+  }, [loaded, loading]);
 
   if (!loaded) {
     return null;
   }
 
   return (
+    <Provider>
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        {/* Si el usuario está autenticado, mostramos las pantallas de tabs */}
+        {isLoggedIn ? (
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        ) : (
+          // Si no está autenticado, mostramos la pantalla de login
+          <Stack.Screen name="auth" options={{ headerShown: false }} />
+        )}
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>
+  </Provider>
   );
 }
