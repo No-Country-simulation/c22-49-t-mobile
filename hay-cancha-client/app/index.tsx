@@ -49,8 +49,8 @@ export default function Home () {
         </Picker>
 
         {/* Filtro por precio */}
-        <Text style={styles.filterLabel}>Precio</Text>
-        <Picker
+        {/* <Text style={styles.filterLabel}>Precio</Text> */}
+        {/* <Picker
           selectedValue={params.price}
           onValueChange={value => updateFilters('price', value)}
           style={styles.picker}
@@ -58,10 +58,10 @@ export default function Home () {
           <Picker.Item label='Selecciona un rango de precios' value='' />
           <Picker.Item label='Mayor a menor' value='desc' />
           <Picker.Item label='Menor a mayor' value='asc' />
-        </Picker>
+        </Picker> */}
 
         {/* Filtro por cantidad de jugadores */}
-        <Text style={styles.filterLabel}>Jugadores</Text>
+        {/* <Text style={styles.filterLabel}>Jugadores</Text>
         <Picker
           selectedValue={params.location}
           onValueChange={(value: string) => updateFilters('location', value)}
@@ -69,7 +69,7 @@ export default function Home () {
           <Picker.Item label='Selecciona una ubicación' value='' />
           <Picker.Item label='Recoleta' value='Recoleta' />
           <Picker.Item label='Palermo' value='Palermo' />
-        </Picker>
+        </Picker> */}
       </View>
 
       {/* Resultados */}
