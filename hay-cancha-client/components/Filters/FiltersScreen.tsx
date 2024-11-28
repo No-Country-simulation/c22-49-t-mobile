@@ -8,7 +8,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 import useFetchFilters from '../../hooks/useFetchFilters'
-import bannerImage from '../../assets/images/banner/banner1.png'
+import bannerImage from '../../assets/images/banner/banner2.png'
 import { ActivityIndicator } from 'react-native'
 
 export default function Home () {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -9,6 +9,12 @@ import {
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import useFetchFilters from '../hooks/useFetchFilters'
+
+const bannerMessages = [
+  'Reserva tu cancha ahora',
+  'Encuentra las mejores canchas',
+  'Juega con tus amigos cerca de ti'
+]
 
 export default function Home () {
   const [params, setParams] = useState({
@@ -23,6 +29,18 @@ export default function Home () {
 
   const { filters, loading, error } = useFetchFilters(params)
 
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentMessageIndex(
+        prevIndex => (prevIndex + 1) % bannerMessages.length
+      )
+    }, 3000) // Cambia cada 3 segundos
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <View style={styles.container}>
       {/* Banner */}
@@ -31,7 +49,9 @@ export default function Home () {
           source={require('../assets/images/banner/banner1.png')}
           style={styles.bannerImage}
         />
-        <Text style={styles.bannerText}>Reserva tu cancha ahora</Text>
+        <Text style={styles.bannerText}>
+          {bannerMessages[currentMessageIndex]} {/* Mensaje dinámico */}
+        </Text>
       </View>
 
       {/* Filtros */}
