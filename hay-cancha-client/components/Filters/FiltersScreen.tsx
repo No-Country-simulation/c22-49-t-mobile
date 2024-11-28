@@ -14,7 +14,8 @@ export default function FiltersScreen () {
   const [params, setParams] = useState({
     location: '',
     price: '',
-    players: ''
+    players: '',
+    sport: ''
   })
 
   // Hook para obtener canchas filtradas
@@ -43,6 +44,12 @@ export default function FiltersScreen () {
         </Text>
         <Text
           style={styles.filterOption}
+          onPress={() => updateFilters({ sport: 'Futbol' })}
+        >
+          Deporte: Futbol
+        </Text>
+        <Text
+          style={styles.filterOption}
           onPress={() => updateFilters({ price: '20000' })}
         >
           Precio: Hasta 20000
@@ -66,6 +73,7 @@ export default function FiltersScreen () {
             <View style={styles.card}>
               <Text style={styles.title}>{item.name}</Text>
               <Text>Ubicación: {item.location}</Text>
+              <Text>Tipo: {item.sport}</Text>
               <Text>Precio: {item.price}</Text>
               <Text>Jugadores: {item.players}</Text>
             </View>

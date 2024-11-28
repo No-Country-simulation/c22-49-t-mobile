@@ -3,16 +3,21 @@ import { View, Image, FlatList, StyleSheet, Dimensions } from 'react-native'
 import { Asset } from 'expo-asset'
 
 const images = [
-  Asset.fromModule(require('../../assets/images/slider-fields/field1.png')).uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/field2.png')).uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/field3.png')).uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/field4.png')).uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/field5.png')).uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/field6.png')).uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/field7.png')).uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/field8.png')).uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/field9.png')).uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/field10.png')).uri
+  Asset.fromModule(require('../../assets/images/slider-fields/basquet2.png'))
+    .uri,
+  Asset.fromModule(require('../../assets/images/slider-fields/basquet3.png'))
+    .uri,
+  Asset.fromModule(require('../../assets/images/slider-fields/basquetbol.png'))
+    .uri,
+  Asset.fromModule(require('../../assets/images/slider-fields/basquetbol1.png'))
+    .uri,
+  Asset.fromModule(require('../../assets/images/slider-fields/futbol.png')).uri,
+  Asset.fromModule(require('../../assets/images/slider-fields/futbol2.png'))
+    .uri,
+  Asset.fromModule(require('../../assets/images/slider-fields/padel.png')).uri,
+  Asset.fromModule(require('../../assets/images/slider-fields/tenis.png')).uri,
+  Asset.fromModule(require('../../assets/images/slider-fields/tenis2.png')).uri
+  //   Asset.fromModule(require('../../assets/images/slider-fields/field10.png')).uri
 ]
 
 export default function ImageSlider () {
@@ -54,10 +59,11 @@ const styles = StyleSheet.create({
   sliderContainer: {
     height: 120, // Ajusta la altura del slider
     marginTop: 10,
-    marginBottom: 16
+    marginBottom: 16,
+    cursor: 'pointer'
   },
   image: {
-    width: Dimensions.get('window').width / 3, // Cada imagen ocupa un tercio del ancho
+    width: Dimensions.get('window').width / 3.5, // Cada imagen ocupa un tercio del ancho
     height: 120,
     marginHorizontal: 4, // Espaciado entre imágenes
     borderRadius: 8,
