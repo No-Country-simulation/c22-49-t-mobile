@@ -6,7 +6,7 @@ export enum CanchaTipo {
 
 export enum CanchaEstado {
   DISPONIBLE = 'disponible',
-  MANTENIMIENTO = 'en_mantenimiento',
+  MANTENIMIENTO = 'en mantenimiento',
 }
 
 export enum ReservaEstado {
