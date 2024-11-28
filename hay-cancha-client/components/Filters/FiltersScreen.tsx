@@ -8,10 +8,9 @@ import {
   TouchableOpacity
 } from 'react-native'
 import useFetchFilters from '../../hooks/useFetchFilters'
-import bannerImage from '../../assets/images/banner/banner2.png'
 import { ActivityIndicator } from 'react-native'
 
-export default function Home () {
+export default function FiltersScreen () {
   const [params, setParams] = useState({
     location: '',
     price: '',
@@ -30,7 +29,6 @@ export default function Home () {
     <View style={styles.container}>
       {/* Banner principal */}
       <View style={styles.banner}>
-        <Image source={bannerImage} style={styles.bannerImage} />
         <Text style={styles.bannerText}>Reserva tu cancha ahora</Text>
       </View>
 
@@ -88,11 +86,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16
   },
-  bannerImage: {
-    width: '100%',
-    height: 350,
-    resizeMode: 'cover'
-  },
+  //   bannerImage: {
+  //     width: '100%',
+  //     height: 400,
+  //     resizeMode: 'cover'
+  //   },
   bannerText: {
     position: 'absolute',
     bottom: 10,

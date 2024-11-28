@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
+  TextInput,
+  TouchableOpacity,
   Image,
   ActivityIndicator,
   FlatList,
   StyleSheet
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import useFetchFilters from '../hooks/useFetchFilters'
 
 const bannerMessages = [
@@ -23,13 +26,23 @@ export default function Home () {
     players: ''
   })
 
+  const [filtersVisible, setFiltersVisible] = useState(false)
+  const { filters, loading, error } = useFetchFilters(params)
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
+
   const updateFilters = (field: string, value: string) => {
     setParams(prev => ({ ...prev, [field]: value }))
+    setFiltersVisible(true) // Muestra las canchas al actualizar un filtro
   }
 
-  const { filters, loading, error } = useFetchFilters(params)
-
-  const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
+  const clearFilters = () => {
+    setParams({
+      location: '',
+      price: '',
+      players: ''
+    })
+    setFiltersVisible(false)
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -54,60 +67,64 @@ export default function Home () {
         </Text>
       </View>
 
-      {/* Filtros */}
-      <View style={styles.filters}>
+      {/* Barra de búsqueda, filtros y botón */}
+      <View style={styles.filterRow}>
+        {/* Barra de búsqueda */}
+        <TextInput
+          style={styles.searchBar}
+          placeholder='Buscar...'
+          value={params.location}
+          onChangeText={text => updateFilters('location', text)}
+        />
+
         {/* Filtro por ubicación */}
-        <Text style={styles.filterLabel}>Ubicación</Text>
         <Picker
           selectedValue={params.location}
           onValueChange={value => updateFilters('location', value)}
           style={styles.picker}
         >
-          <Picker.Item label='Selecciona una ubicación' value='' />
+          <Picker.Item label='Ubicación' value='' />
           <Picker.Item label='Recoleta' value='Recoleta' />
           <Picker.Item label='Palermo' value='Palermo' />
         </Picker>
 
-        {/* Filtro por precio */}
-        {/* <Text style={styles.filterLabel}>Precio</Text> */}
-        {/* <Picker
-          selectedValue={params.price}
-          onValueChange={value => updateFilters('price', value)}
+        {/* Filtro por cantidad de jugadores */}
+        <Picker
+          selectedValue={params.players}
+          onValueChange={value => updateFilters('players', value)}
           style={styles.picker}
         >
-          <Picker.Item label='Selecciona un rango de precios' value='' />
-          <Picker.Item label='Mayor a menor' value='desc' />
-          <Picker.Item label='Menor a mayor' value='asc' />
-        </Picker> */}
+          <Picker.Item label='Jugadores' value='' />
+          <Picker.Item label='5' value='5' />
+          <Picker.Item label='10' value='10' />
+        </Picker>
 
-        {/* Filtro por cantidad de jugadores */}
-        {/* <Text style={styles.filterLabel}>Jugadores</Text>
-        <Picker
-          selectedValue={params.location}
-          onValueChange={(value: string) => updateFilters('location', value)}
-        >
-          <Picker.Item label='Selecciona una ubicación' value='' />
-          <Picker.Item label='Recoleta' value='Recoleta' />
-          <Picker.Item label='Palermo' value='Palermo' />
-        </Picker> */}
+        {/* Botón de limpiar filtros */}
+        <TouchableOpacity onPress={clearFilters} style={styles.clearButton}>
+          <Icon name='broom' size={24} color='#fff' />
+        </TouchableOpacity>
       </View>
 
-      {/* Resultados */}
-      {loading && <ActivityIndicator size='large' color='#0000ff' />}
-      {error && <Text style={styles.error}>{error}</Text>}
-      {!loading && !error && (
-        <FlatList
-          data={filters}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Text style={styles.cardTitle}>{item.name}</Text>
-              <Text>Ubicación: {item.location}</Text>
-              <Text>Precio: {item.price}</Text>
-              <Text>Jugadores: {item.players}</Text>
-            </View>
+      {/* Lista de canchas */}
+      {filtersVisible && (
+        <>
+          {loading && <ActivityIndicator size='large' color='#0000ff' />}
+          {error && <Text style={styles.error}>{error}</Text>}
+          {!loading && !error && (
+            <FlatList
+              data={filters}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <View style={styles.card}>
+                  <Text style={styles.cardTitle}>{item.name}</Text>
+                  <Text>Ubicación: {item.location}</Text>
+                  <Text>Precio: ${item.price}</Text>
+                  <Text>Jugadores: {item.players}</Text>
+                </View>
+              )}
+            />
           )}
-        />
+        </>
       )}
     </View>
   )
@@ -116,39 +133,67 @@ export default function Home () {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9f9f9',
-    padding: 16
+    padding: 16,
+    backgroundColor: '#f9f9f9'
   },
   banner: {
     marginBottom: 16,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   bannerImage: {
     width: '100%',
     height: 200,
-    resizeMode: 'cover'
+    resizeMode: 'cover',
+    borderRadius: 8
   },
   bannerText: {
     position: 'absolute',
-    bottom: 10,
-    left: 10,
+    bottom: 16,
+    left: 16,
     color: '#fff',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold'
   },
-  filters: {
-    marginBottom: 16
+  filterRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+    borderRadius: 8
   },
-  filterLabel: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8
-  },
-  picker: {
+  input: {
+    height: 40, // Asegura que todos los elementos tengan la misma altura
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
-    marginBottom: 12
+    backgroundColor: '#fff'
+  },
+  searchBar: {
+    flex: 1,
+    height: 25,
+    borderWidth: 1,
+    borderColor: '#e0e0e0', // Borde más claro
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    backgroundColor: '#fafafa', // Fondo más claro para diferenciar
+    color: '#333', // Color del texto para buen contraste
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1 // Sutil sombreado para destacar
+  },
+  picker: {
+    flex: 1,
+    marginHorizontal: 4
+  },
+  clearButton: {
+    width: 50, // Botón más pequeño
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#007bff',
+    borderRadius: 8,
+    marginLeft: 8
   },
   card: {
     backgroundColor: '#fff',
@@ -157,7 +202,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     shadowColor: '#000',
     shadowOpacity: 0.1,
-    shadowRadius: 5
+    shadowRadius: 4
   },
   cardTitle: {
     fontSize: 18,
@@ -165,22 +210,158 @@ const styles = StyleSheet.create({
   },
   error: {
     color: 'red',
-    textAlign: 'center',
-    marginTop: 10
+    textAlign: 'center'
   }
 })
 
-// import React from 'react'
-// import { View, Text, Button, StyleSheet } from 'react-native'
-// import { useRouter } from 'expo-router'
+// import React, { useEffect, useState } from 'react'
+// import {
+//   View,
+//   Text,
+//   TextInput,
+//   TouchableOpacity,
+//   Image,
+//   ActivityIndicator,
+//   FlatList,
+//   StyleSheet
+// } from 'react-native'
+// import { Picker } from '@react-native-picker/picker'
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+// import useFetchFilters from '../hooks/useFetchFilters'
+
+// const bannerMessages = [
+//   'Reserva tu cancha ahora',
+//   'Encuentra las mejores canchas',
+//   'Juega con tus amigos cerca de ti'
+// ]
 
 // export default function Home () {
-//   const router = useRouter()
+//   const [params, setParams] = useState({
+//     location: '',
+//     price: '',
+//     players: ''
+//   })
+
+//   const [filtersVisible, setFiltersVisible] = useState(false)
+//   const { filters, loading, error } = useFetchFilters(params)
+//   const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
+
+//   const updateFilters = (field: string, value: string) => {
+//     setParams(prev => ({ ...prev, [field]: value }))
+//     setFiltersVisible(true) // Muestra las canchas al actualizar un filtro
+//   }
+
+//   const clearFilters = () => {
+//     setParams({
+//       location: '',
+//       price: '',
+//       players: ''
+//     })
+//     setFiltersVisible(false)
+//   }
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       setCurrentMessageIndex(
+//         prevIndex => (prevIndex + 1) % bannerMessages.length
+//       )
+//     }, 3000) // Cambia cada 3 segundos
+
+//     return () => clearInterval(interval)
+//   }, [])
 
 //   return (
 //     <View style={styles.container}>
-//       <Text style={styles.title}>Bienvenido a Hay Cancha</Text>
-//       <Button title='Ver filtros' onPress={() => router.push('/filters')} />
+//       {/* Banner */}
+//       <View style={styles.banner}>
+//         <Image
+//           source={require('../assets/images/banner/banner1.png')}
+//           style={styles.bannerImage}
+//         />
+//         <Text style={styles.bannerText}>
+//           {bannerMessages[currentMessageIndex]} {/* Mensaje dinámico */}
+//         </Text>
+//       </View>
+
+//       <View style={styles.filtersAndSearchBar}>
+//         <View style={styles.searchBarContainer}>
+//           {/* Barra de búsqueda */}
+//           <TextInput
+//             style={styles.searchBar}
+//             placeholder='Buscar...'
+//             value={params.location}
+//             onChangeText={text =>
+//               setParams(prev => ({ ...prev, location: text }))
+//             }
+//           />
+
+//           {/* Botón de limpiar filtros */}
+//           <TouchableOpacity onPress={clearFilters} style={styles.clearButton}>
+//             <Icon name='broom' size={24} color='#fff' />
+//           </TouchableOpacity>
+//         </View>
+
+//         {/* Filtros */}
+//         <View style={styles.filters}>
+//           {/* Filtro por ubicación */}
+//           <Text style={styles.filterLabel}>Ubicación</Text>
+//           <Picker
+//             selectedValue={params.location}
+//             onValueChange={value => updateFilters('location', value)}
+//             style={styles.picker}
+//           >
+//             <Picker.Item label='Selecciona una ubicación' value='' />
+//             <Picker.Item label='Recoleta' value='Recoleta' />
+//             <Picker.Item label='Palermo' value='Palermo' />
+//           </Picker>
+
+//           {/* Filtro por precio */}
+//           {/* <Text style={styles.filterLabel}>Precio</Text>
+//         <Picker
+//           selectedValue={params.price}
+//           onValueChange={value => updateFilters('price', value)}
+//           style={styles.picker}
+//         >
+//           <Picker.Item label='Selecciona un precio' value='' />
+//           <Picker.Item label='De menor a mayor' value='asc' />
+//           <Picker.Item label='De mayor a menor' value='desc' />
+//         </Picker> */}
+
+//           {/* Filtro por cantidad de jugadores */}
+//           {/* <Text style={styles.filterLabel}>Jugadores</Text>
+//         <Picker
+//           selectedValue={params.players}
+//           onValueChange={value => updateFilters('players', value)}
+//           style={styles.picker}
+//         >
+//           <Picker.Item label='Selecciona cantidad de jugadores' value='' />
+//           <Picker.Item label='5' value='5' />
+//           <Picker.Item label='10' value='10' />
+//         </Picker> */}
+//         </View>
+//       </View>
+
+//       {/* Lista de canchas */}
+//       {filtersVisible && (
+//         <>
+//           {loading && <ActivityIndicator size='large' color='#0000ff' />}
+//           {error && <Text style={styles.error}>{error}</Text>}
+//           {!loading && !error && (
+//             <FlatList
+//               data={filters}
+//               keyExtractor={(item, index) => index.toString()}
+//               renderItem={({ item }) => (
+//                 <View style={styles.card}>
+//                   <Text style={styles.cardTitle}>{item.name}</Text>
+//                   <Text>Ubicación: {item.location}</Text>
+//                   <Text>Precio: ${item.price}</Text>
+//                   <Text>Jugadores: {item.players}</Text>
+//                 </View>
+//               )}
+//             />
+//           )}
+//         </>
+//       )}
 //     </View>
 //   )
 // }
@@ -188,13 +369,86 @@ const styles = StyleSheet.create({
 // const styles = StyleSheet.create({
 //   container: {
 //     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#f5f5f5'
+//     padding: 16,
+//     backgroundColor: '#f9f9f9'
 //   },
 //   title: {
-//     fontSize: 24,
+//     fontSize: 20,
 //     fontWeight: 'bold',
-//     marginBottom: 20
+//     marginBottom: 16
+//   },
+//   filtersAndSearchBar: {
+//     marginBottom: 16,
+//     display: 'flex'
+//   },
+//   searchBarContainer: {
+//     flexDirection: 'row', // Coloca los elementos en una fila
+//     alignItems: 'center',
+//     marginBottom: 16
+//   },
+//   searchBar: {
+//     flex: 1, // Hace que la barra de búsqueda tome todo el espacio disponible
+//     borderWidth: 1,
+//     borderColor: '#ccc',
+//     borderRadius: 8,
+//     padding: 8,
+//     backgroundColor: '#fff'
+//   },
+//   clearButton: {
+//     marginLeft: 8, // Espacio entre el botón y la barra de búsqueda
+//     backgroundColor: '#007bff', // Color de fondo del botón
+//     padding: 10,
+//     borderRadius: 8
+//   },
+//   banner: {
+//     marginBottom: 16,
+//     alignItems: 'center',
+//     justifyContent: 'center'
+//   },
+//   bannerImage: {
+//     width: '100%',
+//     height: 350,
+//     resizeMode: 'cover',
+//     borderRadius: 8
+//   },
+//   bannerText: {
+//     position: 'absolute',
+//     bottom: 16,
+//     left: 16,
+//     color: '#fff',
+//     fontSize: 18,
+//     fontWeight: 'bold'
+//   },
+//   filters: {
+//     marginBottom: 16
+//   },
+//   filterLabel: {
+//     fontSize: 16,
+//     fontWeight: 'bold',
+//     marginBottom: 8
+//   },
+//   picker: {
+//     borderWidth: 1,
+//     borderColor: '#ccc',
+//     borderRadius: 8,
+//     marginBottom: 16,
+//     paddingHorizontal: 8
+//   },
+//   card: {
+//     backgroundColor: '#fff',
+//     padding: 16,
+//     marginBottom: 16,
+//     borderRadius: 8,
+//     shadowColor: '#000',
+//     shadowOpacity: 0.1,
+//     shadowRadius: 4
+//   },
+//   cardTitle: {
+//     fontSize: 18,
+//     fontWeight: 'bold'
+//   },
+//   error: {
+//     color: 'red',
+//     textAlign: 'center'
 //   }
 // })
