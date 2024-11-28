@@ -21,12 +21,10 @@ import { CreateCanchaDto } from './dto/CreateCancha.dto';
 export class CanchaController {
   constructor(private readonly canchaService: CanchaService) {}
 
-
   @Post()
   async create(@Body()createCanchaDto: CreateCanchaDto){
     return this.canchaService.create(createCanchaDto)
   }
-
 
   @Get()
   async findAll(){
