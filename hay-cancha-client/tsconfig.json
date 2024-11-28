@@ -2,10 +2,15 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    "jsx": "react-native",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "target": "esnext",
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
   "include": [
@@ -13,6 +18,7 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "nativewind-env.d.ts"
+    "nativewind-env.d.ts",
+    "node_modules/expo-router/types/*.d.ts"
   ]
 }
