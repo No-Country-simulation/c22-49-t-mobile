@@ -12,6 +12,7 @@ import {
 import { Picker } from '@react-native-picker/picker'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import useFetchFilters from '../hooks/useFetchFilters'
+import ImageSlider from '../components/Slider/ImageSlider'
 
 const bannerMessages = [
   'Reserva tu cancha ahora',
@@ -126,6 +127,8 @@ export default function Home () {
           )}
         </>
       )}
+      {/* Slider de imágenes */}
+      <ImageSlider />
     </View>
   )
 }
