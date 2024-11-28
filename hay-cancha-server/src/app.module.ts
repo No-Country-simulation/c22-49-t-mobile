@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-<<<<<<< HEAD
-import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { MongooseModule } from '@nestjs/mongoose';
+import { FilterModule } from './filters/filter.module';
+import { CanchaModule } from './cancha/cancha.module';
 
 @Module({
   imports: [
@@ -16,18 +18,11 @@ import { ConfigModule } from '@nestjs/config';
       },
       secret: process.env.JWT_SECRET,
     }),
+    MongooseModule.forRoot(process.env.MONGODB_URL),
+    CanchaModule,
+    FilterModule,
   ],
   controllers: [],
   providers: [],
-=======
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { FilterModule } from './filters/filter.module';
-
-@Module({
-  imports: [FilterModule], // Agregado el módulo de filtros
-  controllers: [AppController],
-  providers: [AppService],
->>>>>>> 862443678a8085ee38c5b1ebf33a5a0bd1a2caaa
 })
 export class AppModule {}
