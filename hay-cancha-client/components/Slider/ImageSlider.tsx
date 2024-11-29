@@ -3,13 +3,13 @@ import { View, Image, FlatList, StyleSheet, Dimensions } from 'react-native'
 import { Asset } from 'expo-asset'
 
 const images = [
-  Asset.fromModule(require('../../assets/images/slider-fields/basquet2.png'))
-    .uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/basquet3.png'))
-    .uri,
   Asset.fromModule(require('../../assets/images/slider-fields/basquetbol.png'))
     .uri,
   Asset.fromModule(require('../../assets/images/slider-fields/basquetbol1.png'))
+    .uri,
+  Asset.fromModule(require('../../assets/images/slider-fields/basquetbol2.png'))
+    .uri,
+  Asset.fromModule(require('../../assets/images/slider-fields/basquetbol3.png'))
     .uri,
   Asset.fromModule(require('../../assets/images/slider-fields/futbol.png')).uri,
   Asset.fromModule(require('../../assets/images/slider-fields/futbol2.png'))

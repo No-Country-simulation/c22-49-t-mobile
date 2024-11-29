@@ -98,7 +98,7 @@ export default function Home () {
         >
           <Picker.Item label='Deporte' value='' />
           <Picker.Item label='Futbol' value='Futbol' />
-          <Picker.Item label='Basket' value='Basket' />
+          <Picker.Item label='Basquetbol' value='Basquetbol' />
           <Picker.Item label='Tenis' value='Tenis' />
           <Picker.Item label='Pádel' value='Pádel' />
           <Picker.Item label='Voleibol' value='Voleibol' />
@@ -134,11 +134,14 @@ export default function Home () {
               keyExtractor={(item, index) => index.toString()}
               renderItem={({ item }) => (
                 <View style={styles.card}>
-                  <Text style={styles.cardTitle}>{item.name}</Text>
-                  <Text>Ubicación: {item.location}</Text>
-                  <Text>Precio: ${item.price}</Text>
-                  <Text>Jugadores: {item.players}</Text>
-                  <Text>Deporte: {item.sport}</Text>
+                  <Image source={item.image} style={styles.cardImage} />{' '}
+                  <View style={styles.cardContent}>
+                    <Text style={styles.cardTitle}>{item.name}</Text>
+                    <Text>Ubicación: {item.location}</Text>
+                    <Text>Precio: ${item.price}</Text>
+                    <Text>Jugadores: {item.players}</Text>
+                    <Text>Deporte: {item.sport}</Text>
+                  </View>
                 </View>
               )}
             />
@@ -217,17 +220,31 @@ const styles = StyleSheet.create({
     marginLeft: 8
   },
   card: {
+    flexDirection: 'row',
     backgroundColor: '#fff',
     padding: 16,
     marginBottom: 16,
     borderRadius: 8,
     shadowColor: '#000',
     shadowOpacity: 0.1,
-    shadowRadius: 4
+    shadowRadius: 4,
+    elevation: 2,
+    alignItems: 'center'
+  },
+  cardImage: {
+    width: 120,
+    height: 120, // Altura de la imagen
+    borderRadius: 8,
+    marginRight: 16,
+    resizeMode: 'cover' // Ajuste de la imagen
+  },
+  cardContent: {
+    flex: 1
   },
   cardTitle: {
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 8
   },
   error: {
     color: 'red',

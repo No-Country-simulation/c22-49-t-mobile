@@ -5,6 +5,7 @@ interface FilterParams {
     location?: string;
     price?: string;
     players?: string;
+    sport?: string;
 }
 
 interface FilterResponse {
@@ -12,12 +13,14 @@ interface FilterResponse {
     price: string;
     name: string;
     players: string;
+    sport: string;
 }
 
 export default function useFetchFilters(params: {
     location: string;
     price: string;
     players: string;
+    sport: string;
   }) {
     const [filters, setFilters] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -31,15 +34,19 @@ export default function useFetchFilters(params: {
         try {
           // Simulación de datos de API
           const data = [
-            { name: 'Cancha 1', location: 'Recoleta', price: '20000', players: '5' },
-            { name: 'Cancha 2', location: 'Palermo', price: '15000', players: '10' },
+            { name: 'Cancha 1', location: 'Recoleta', price: '20000', players: '14', sport: 'Futbol', image: require('../assets/images/slider-fields/futbol2.png') },
+            { name: 'Cancha 2', location: 'Recoleta', price: '20000', players: '4', sport: 'Pádel', image: require('../assets/images/slider-fields/padel.png') },
+            { name: 'Cancha 3', location: 'Palermo', price: '25000', players: '10', sport: 'Basquetbol', image: require('../assets/images/slider-fields/basquetbol2.png') },
+            { name: 'Cancha 4', location: 'Palermo', price: '25000', players: '12', sport: 'Futbol', image: require('../assets/images/slider-fields/futbol3.png') },
           ];
   
           // Filtrado de datos según parámetros
           const filteredData = data.filter((item) => {
             return (
               (params.location ? item.location === params.location : true) &&
-              (params.players ? item.players === params.players : true)
+              (params.players ? item.players === params.players : true) &&
+              (params.price ? item.price <= params.price : true) &&
+              (params.sport ? item.sport === params.sport : true)
             );
           });
   
