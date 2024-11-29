@@ -57,8 +57,7 @@ export default function ImageSlider () {
 
 const styles = StyleSheet.create({
   sliderContainer: {
-    height: 120, // Ajusta la altura del slider
-    marginTop: 10,
+    height: 120,
     marginBottom: 16,
     cursor: 'pointer'
   },

@@ -125,7 +125,7 @@ export default function Home () {
 
       {/* Lista de canchas */}
       {filtersVisible && (
-        <>
+        <View style={{ flex: 1, marginTop: 8 }}>
           {loading && <ActivityIndicator size='large' color='#0000ff' />}
           {error && <Text style={styles.error}>{error}</Text>}
           {!loading && !error && (
@@ -146,7 +146,7 @@ export default function Home () {
               )}
             />
           )}
-        </>
+        </View>
       )}
       {/* Slider de imágenes */}
       <ImageSlider />
