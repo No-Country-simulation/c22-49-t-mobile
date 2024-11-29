@@ -14,7 +14,7 @@ export class DatabaseService {
     return this.canchaRepository.find();
   }
 
-  async findWithFilters(location?: string, maxPrice?: number, players?: number ): Promise<Cancha[]> {
+  async findWithFilters(location?: string, maxPrice?: number, players?: number, sport?: string ): Promise<Cancha[]> {
     const query = this.canchaRepository.createQueryBuilder('cancha');
     
     if (location) {
@@ -28,6 +28,10 @@ export class DatabaseService {
     if (players) {
         query.andWhere('cancha.players = :players', { players });
         }
+
+    if (sport) {
+        query.andWhere('cancha.sport = :sport', { sport });
+    }
 
     if (!location && !maxPrice && !players) {
       return this.findAll();

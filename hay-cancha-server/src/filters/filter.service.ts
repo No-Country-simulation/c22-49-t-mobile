@@ -7,16 +7,19 @@ import { DocumentData, Query } from 'firebase-admin/firestore';
 export class FilterService {
   async getFilters(filters: any): Promise<any[]> {
     const mockData = [
-      { location: 'Recoleta', price: 20000, name: 'Cancha 1', players: '5' },
-      { location: 'Palermo', price: 25000, name: 'Cancha 2', players: '7' },
+      { location: 'Recoleta', price: 20000, name: 'Cancha 1', players: '14', sport: 'Futbol'},
+      { location: 'Recoleta', price: 20000, name: 'Cancha 2', players: '4', sport: 'Pádel' },
+      { location: 'Palermo', price: 25000, name: 'Cancha 3', players: '10', sport: 'Basquetbol' },
+      { location: 'Palermo', price: 25000, name: 'Cancha 4', players: '12', sport: 'Futbol' },
     ];
 
     return mockData.filter(
       (cancha) =>
         (!filters.location || cancha.location === filters.location) &&
         (!filters.price || cancha.price <= Number(filters.price)) &&
-        (!filters.players || cancha.players === filters.players),
-    );
+        (!filters.players || cancha.players === filters.players) &&
+        (!filters.sport || cancha.sport === filters.sport),
+    );  
   }
 }
 
