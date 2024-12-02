@@ -1,28 +1,27 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { View, Image, FlatList, StyleSheet, Dimensions } from 'react-native'
-import { Asset } from 'expo-asset'
+import {
+  View,
+  Image,
+  StyleSheet,
+  Dimensions,
+  FlatList,
+  ImageSourcePropType
+} from 'react-native'
 
-const images = [
-  Asset.fromModule(require('../../assets/images/slider-fields/basquetbol.png'))
-    .uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/basquetbol1.png'))
-    .uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/basquetbol2.png'))
-    .uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/basquetbol3.png'))
-    .uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/futbol.png')).uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/futbol2.png'))
-    .uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/padel.png')).uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/tenis.png')).uri,
-  Asset.fromModule(require('../../assets/images/slider-fields/tenis2.png')).uri
-  //   Asset.fromModule(require('../../assets/images/slider-fields/field10.png')).uri
+const images: { uri: ImageSourcePropType }[] = [
+  { uri: require('../../assets/images/slider-fields/basquetbol.png') },
+  { uri: require('../../assets/images/slider-fields/basquetbol1.png') },
+  { uri: require('../../assets/images/slider-fields/basquetbol2.png') },
+  { uri: require('../../assets/images/slider-fields/basquetbol3.png') },
+  { uri: require('../../assets/images/slider-fields/futbol.png') },
+  { uri: require('../../assets/images/slider-fields/futbol2.png') },
+  { uri: require('../../assets/images/slider-fields/padel.png') },
+  { uri: require('../../assets/images/slider-fields/tenis2.png') }
 ]
 
 export default function ImageSlider () {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const sliderRef = useRef(null)
+  const sliderRef = useRef<FlatList<{ uri: ImageSourcePropType }> | null>(null)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -49,7 +48,9 @@ export default function ImageSlider () {
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => <Image source={item} style={styles.image} />}
+        renderItem={({ item }) => (
+          <Image source={item.uri} style={styles.image} />
+        )}
       />
     </View>
   )
@@ -58,8 +59,7 @@ export default function ImageSlider () {
 const styles = StyleSheet.create({
   sliderContainer: {
     height: 120,
-    marginBottom: 16,
-    cursor: 'pointer'
+    marginBottom: 16
   },
   image: {
     width: Dimensions.get('window').width / 3.5, // Cada imagen ocupa un tercio del ancho

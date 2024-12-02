@@ -13,7 +13,8 @@ export default function Filters () {
   const [params, setParams] = useState({
     location: '',
     price: '',
-    players: ''
+    players: '',
+    sport: ''
   })
 
   const updateFilters = (field: string, value: string) => {
