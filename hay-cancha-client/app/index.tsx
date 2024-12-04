@@ -89,6 +89,9 @@ export default function Home () {
           <Picker.Item label='Ubicación' value='' />
           <Picker.Item label='Recoleta' value='Recoleta' />
           <Picker.Item label='Palermo' value='Palermo' />
+          <Picker.Item label='Belgrano' value='Belgrano' />
+          <Picker.Item label='Agronomía' value='Agronomía' />
+          <Picker.Item label='Barracas' value='Barracas' />
         </Picker>
 
         <Picker
@@ -101,7 +104,6 @@ export default function Home () {
           <Picker.Item label='Basquetbol' value='Basquetbol' />
           <Picker.Item label='Tenis' value='Tenis' />
           <Picker.Item label='Pádel' value='Pádel' />
-          <Picker.Item label='Voleibol' value='Voleibol' />
         </Picker>
 
         {/* Filtro por cantidad de jugadores */}
