@@ -3,7 +3,8 @@ import { FormContainer, InputField, MainButton } from "../../common"
 import { IForgotFormProps } from "./types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { forgotPasswordValidationSchema } from "../validationSchema"
-import { useAuthUser } from "@/hooks/useAuthUser/useAuthUser"
+import { useForgotPassword } from "@/hooks/AuthHooks"
+
 
 export const ForgotForm = ({
 
@@ -13,7 +14,7 @@ export const ForgotForm = ({
         resolver: zodResolver(forgotPasswordValidationSchema),
         mode: "onChange",
     })
-    const { mutate: sendEmail, isPending, isSuccess, error, reset } = useAuthUser().useForgotPassword();
+    const { mutate: sendEmail, isPending, isSuccess, error, reset } = useForgotPassword();
 
     const onSubmit = handleSubmit(async (data) => {
         const { email } = data;
@@ -37,7 +38,7 @@ export const ForgotForm = ({
             <MainButton
                 text="Enviar"
                 variant="background"
-                isLoading={false}
+                isLoading={isPending}
                 onPress={onSubmit}
             />
         </FormContainer>

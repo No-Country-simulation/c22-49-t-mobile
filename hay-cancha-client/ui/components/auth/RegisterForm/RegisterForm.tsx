@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FormContainer, InputField, MainButton } from "../../common"
 import { IRegisterFormProps } from "./types"
-import { FieldValues, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { singUpValidationSchema } from "../validationSchema"
-import { useAuthUser } from "@/hooks/useAuthUser/useAuthUser"
+import { useCreateUser } from "@/hooks/AuthHooks"
 
 export const RegisterForm = ({
 
@@ -13,7 +13,7 @@ export const RegisterForm = ({
         resolver: zodResolver(singUpValidationSchema),
         mode: "onChange",
     })
-    const { mutate: createUser, isPending, isSuccess, error } = useAuthUser().useCreateUser();
+    const { mutate: createUser, isPending, isSuccess, error } = useCreateUser();
 
     const onSubmit = handleSubmit(async (data) => {
         const { name, email, password } = data;

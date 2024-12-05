@@ -1,20 +1,20 @@
-import { FC } from "react";
 import { ILoginFormProps } from "./types";
 import { FormContainer, InputField, MainButton } from "../../common";
-import { FieldValues, useForm } from "react-hook-form";
+import {  useForm } from "react-hook-form";
 import { singInValidationSchema } from "../validationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuthUser } from "@/hooks/useAuthUser/useAuthUser";
+import { useLoginUser } from "@/hooks/AuthHooks";
+
 export const LoginForm = ({
 
 }: ILoginFormProps) => {
-
+    
+    const { mutate: loginUser, isPending, isSuccess, error } = useLoginUser();
     const { control, watch, handleSubmit, formState, reset } = useForm({
         resolver: zodResolver(singInValidationSchema),
         mode: "onChange",
     })
 
-    const { mutate: loginUser, isPending, isSuccess, error } = useAuthUser().useLoginUser();
 
     const onSubmit = handleSubmit(async (data) => {
         const { email, password } = data;
