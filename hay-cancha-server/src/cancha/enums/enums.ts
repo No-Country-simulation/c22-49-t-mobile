@@ -1,16 +1,18 @@
-export enum CanchaTipo {
-  CINCO = '5v5',
-  SIETE = '7v7',
-  ONCE = '11v11',
+export enum Deporte {
+  FULTOL = "Fútbol",
+  BASQUETBOL = "Básquetbol",
+  TENIS = "Tenis",
+  PADEL = "Pádel",
+  VOLEIBOL = "Vóleibol",
 }
 
 export enum CanchaEstado {
-  DISPONIBLE = 'disponible',
-  MANTENIMIENTO = 'en mantenimiento',
+  DISPONIBLE = "disponible",
+  MANTENIMIENTO = "en mantenimiento",
 }
 
 export enum ReservaEstado {
-  PENDIENTE = 'pendiente',
-  CONFIRMADA = 'confirmada',
-  CANCELADA = 'cancelada',
+  PENDIENTE = "pendiente",
+  CONFIRMADA = "confirmada",
+  CANCELADA = "cancelada",
 }
