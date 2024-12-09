@@ -1,7 +1,9 @@
-export declare enum CanchaTipo {
-    CINCO = "5v5",
-    SIETE = "7v7",
-    ONCE = "11v11"
+export declare enum Deporte {
+    FULTOL = "F\u00FAtbol",
+    BASQUETBOL = "B\u00E1squetbol",
+    TENIS = "Tenis",
+    PADEL = "P\u00E1del",
+    VOLEIBOL = "V\u00F3leibol"
 }
 export declare enum CanchaEstado {
     DISPONIBLE = "disponible",

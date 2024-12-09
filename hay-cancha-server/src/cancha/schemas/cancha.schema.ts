@@ -1,6 +1,6 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { CanchaEstado, CanchaTipo } from '../enums/enums';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from "mongoose";
+import { CanchaEstado, Deporte } from "../enums/enums";
 
 export type CanchaDocument = Cancha & Document;
 
@@ -12,8 +12,8 @@ export class Cancha {
   @Prop({ required: true })
   ubicación: string;
 
-  @Prop({ required: true, enum: CanchaTipo })
-  tipo: CanchaTipo;
+  @Prop({ required: true, enum: Deporte })
+  tipo: Deporte;
 
   @Prop({ required: true })
   precio_por_hora: number;
