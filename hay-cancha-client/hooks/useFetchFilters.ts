@@ -34,15 +34,15 @@ export default function useFetchFilters(params: {
         try {
           // Simulación de datos de API
           const data = [
-            { name: 'Cancha 1', location: 'Recoleta', price: '20000', players: '14', sport: 'Futbol', image: require('../assets/images/slider-fields/futbol2.png') },
+            { name: 'Cancha 1', location: 'Recoleta', price: '20000', players: '14', sport: 'Futbol', image: require('../assets/images/slider-fields/futbol4.png') },
             { name: 'Cancha 2', location: 'Recoleta', price: '20000', players: '4', sport: 'Pádel', image: require('../assets/images/slider-fields/padel.png') },
             { name: 'Cancha 3', location: 'Palermo', price: '25000', players: '10', sport: 'Basquetbol', image: require('../assets/images/slider-fields/basquetbol2.png') },
             { name: 'Cancha 4', location: 'Palermo', price: '25000', players: '12', sport: 'Futbol', image: require('../assets/images/slider-fields/futbol3.png') },
             { name: 'Cancha 5', location: 'Belgrano', price: '23000', players: '14', sport: 'Futbol', image: require('../assets/images/slider-fields/futbol.png') },
-            { name: 'Cancha 6', location: 'Belgrano', price: '23000', players: '4', sport: 'Pádel', image: require('../assets/images/slider-fields/padel.png') },
+            { name: 'Cancha 6', location: 'Belgrano', price: '23000', players: '4', sport: 'Pádel', image: require('../assets/images/slider-fields/padel1.png') },
             { name: 'Cancha 7', location: 'Belgrano', price: '20000', players: '10', sport: 'Basquetbol', image: require('../assets/images/slider-fields/basquetbol1.png') },
             { name: 'Cancha 8', location: 'Agronomía', price: '15000', players: '10', sport: 'Basquetbol', image: require('../assets/images/slider-fields/basquetbol3.png') },
-            { name: 'Cancha 9', location: 'Agronomía', price: '15000', players: '14', sport: 'Futbol', image: require('../assets/images/slider-fields/futbol4.png') },
+            { name: 'Cancha 9', location: 'Agronomía', price: '15000', players: '14', sport: 'Futbol', image: require('../assets/images/slider-fields/futbol2.png') },
             { name: 'Cancha 10', location: 'Agronomía', price: '15000', players: '4', sport: 'Tenis', image: require('../assets/images/slider-fields/tenis.png') },
             { name: 'Cancha 11', location: 'Barracas', price: '15000', players: '10', sport: 'Basquetbol', image: require('../assets/images/slider-fields/basquetbol.png') },
             { name: 'Cancha 12', location: 'Barracas', price: '20000', players: '14', sport: 'Futbol', image: require('../assets/images/slider-fields/futbol5.png') },
