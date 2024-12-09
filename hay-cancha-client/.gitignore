@@ -34,6 +34,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+dist/tsconfig.build.tsbuildinfo
 
 app-example
 
@@ -41,3 +42,5 @@ app-example
 /firebase-key.json
 /filtrosCanchas/
 ../hay-cancha-server/
+
+
