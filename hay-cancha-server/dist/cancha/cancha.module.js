@@ -18,7 +18,7 @@ exports.CanchaModule = CanchaModule;
 exports.CanchaModule = CanchaModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forFeature([{ name: 'Cancha', schema: cancha_schema_1.CanchaSchema }]),
+            mongoose_1.MongooseModule.forFeature([{ name: cancha_schema_1.Cancha.name, schema: cancha_schema_1.CanchaSchema }]),
         ],
         controllers: [cancha_controller_1.CanchaController],
         providers: [cancha_service_1.CanchaService],

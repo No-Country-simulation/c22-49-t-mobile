@@ -1,26 +1,42 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import * as bcrypt from "bcrypt";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { User, UserDocument } from "./schemas/user.schema";
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private jwtService: JwtService
+  ) {}
 
-  findAll() {
-    return `This action returns all user`;
-  }
+  async create(createUserDto: CreateUserDto) {
+    const { name, email, password } = createUserDto;
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+    // Validar si el email ya está registrado
+    const existingUser = await this.userModel.findOne({ email });
+    if (existingUser) {
+      throw new Error("Email already registered");
+    }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+    // Encriptar la contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    // Crear el usuario
+    const user = new this.userModel({
+      name,
+      email,
+      password: hashedPassword,
+    });
+    await user.save();
+
+    // Generar token JWT
+    const payload = { sub: user._id, name: user.name, email: user.email };
+    const token = this.jwtService.sign(payload);
+
+    return { token, user };
   }
 }
