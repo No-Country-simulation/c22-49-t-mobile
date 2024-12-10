@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
@@ -18,6 +18,7 @@ export class UserService {
 
     // Validar si el email ya está registrado
     const existingUser = await this.userModel.findOne({ email });
+
     if (existingUser) {
       throw new Error("Email already registered");
     }
@@ -33,10 +34,24 @@ export class UserService {
     });
     await user.save();
 
-    // Generar token JWT
     const payload = { sub: user._id, name: user.name, email: user.email };
     const token = this.jwtService.sign(payload);
 
-    return { token, user };
+    return {
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    };
+  }
+
+  async findAll(): Promise<User[]> {
+    try {
+      return this.userModel.find().select("-password"); // Excluir la contraseña en la respuesta
+    } catch (error) {
+      throw new InternalServerErrorException("Error al pedir las canchas");
+    }
   }
 }

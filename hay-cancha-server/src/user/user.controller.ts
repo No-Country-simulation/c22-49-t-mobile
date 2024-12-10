@@ -23,4 +23,9 @@ export class UserController {
       throw new Error(error.message);
     }
   }
+
+  @Get()
+  async findAll() {
+    return this.userService.findAll();
+  }
 }
