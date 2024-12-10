@@ -11,8 +11,8 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const jwt_1 = require("@nestjs/jwt");
 const mongoose_1 = require("@nestjs/mongoose");
-const filter_module_1 = require("./filters/filter.module");
 const cancha_module_1 = require("./cancha/cancha.module");
+const user_module_1 = require("./user/user.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -21,18 +21,18 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
-                envFilePath: './.env.development',
+                envFilePath: "./.env.development",
             }),
             jwt_1.JwtModule.register({
                 global: true,
                 signOptions: {
-                    expiresIn: '1h',
+                    expiresIn: "1h",
                 },
                 secret: process.env.JWT_SECRET,
             }),
             mongoose_1.MongooseModule.forRoot(process.env.MONGODB_URL),
             cancha_module_1.CanchaModule,
-            filter_module_1.FilterModule,
+            user_module_1.UserModule,
         ],
         controllers: [],
         providers: [],

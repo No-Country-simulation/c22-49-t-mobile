@@ -8,7 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CanchaSchema = exports.Cancha = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
@@ -25,8 +24,8 @@ __decorate([
     __metadata("design:type", String)
 ], Cancha.prototype, "ubicaci\u00F3n", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true, enum: enums_1.CanchaTipo }),
-    __metadata("design:type", typeof (_a = typeof enums_1.CanchaTipo !== "undefined" && enums_1.CanchaTipo) === "function" ? _a : Object)
+    (0, mongoose_1.Prop)({ required: true, enum: enums_1.Deporte }),
+    __metadata("design:type", String)
 ], Cancha.prototype, "tipo", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),

@@ -15,7 +15,7 @@ async function bootstrap() {
   // Configuración de swagger
   const config = new DocumentBuilder()
     .setTitle('Documentacion')
-    .setDescription('Catalogo Web')
+    .setDescription('CanchaApp')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

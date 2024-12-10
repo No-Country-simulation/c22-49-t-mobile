@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from "@nestjs/swagger";
 import {
   IsEnum,
   IsNotEmpty,
@@ -6,37 +6,37 @@ import {
   IsString,
   IsNumber,
   IsUrl,
-} from 'class-validator';
-import { CanchaEstado, CanchaTipo } from '../enums/enums';
+} from "class-validator";
+import { CanchaEstado, Deporte } from "../enums/enums";
 
 export class CreateCanchaDto {
   @ApiProperty({
-    description: 'Nombre de la cancha',
-    example: 'Cancha Principal',
+    description: "Nombre de la cancha",
+    example: "Cancha Principal",
   })
   @IsString()
   @IsNotEmpty()
   nombre: string;
 
   @ApiProperty({
-    description: 'Ubicación de la cancha',
-    example: 'Av. Siempre Viva 123',
+    description: "Ubicación de la cancha",
+    example: "Av. Siempre Viva 123",
   })
   @IsString()
   @IsNotEmpty()
   ubicación: string;
 
   @ApiProperty({
-    description: 'Tipo de cancha',
-    example: CanchaTipo.CINCO,
-    enum: CanchaTipo,
+    description: "Tipo de cancha",
+    example: Deporte.FULTOL,
+    enum: Deporte,
   })
-  @IsEnum(CanchaTipo)
+  @IsEnum(Deporte)
   @IsNotEmpty()
-  tipo: CanchaTipo;
+  tipo: Deporte;
 
   @ApiProperty({
-    description: 'Precio por hora de uso de la cancha',
+    description: "Precio por hora de uso de la cancha",
     example: 120.5,
   })
   @IsNumber()
@@ -44,23 +44,23 @@ export class CreateCanchaDto {
   precio_por_hora: number;
 
   @ApiProperty({
-    description: 'Horario de apertura de la cancha (formato HH:mm)',
-    example: '08:00',
+    description: "Horario de apertura de la cancha (formato HH:mm)",
+    example: "08:00",
   })
   @IsString()
   @IsNotEmpty()
   horario_apertura: string;
 
   @ApiProperty({
-    description: 'Horario de cierre de la cancha (formato HH:mm)',
-    example: '22:00',
+    description: "Horario de cierre de la cancha (formato HH:mm)",
+    example: "22:00",
   })
   @IsString()
   @IsNotEmpty()
   horario_cierre: string;
 
   @ApiProperty({
-    description: 'Estado actual de la cancha',
+    description: "Estado actual de la cancha",
     example: CanchaEstado.DISPONIBLE,
     enum: CanchaEstado,
     default: CanchaEstado.DISPONIBLE,
@@ -70,8 +70,8 @@ export class CreateCanchaDto {
   estado: CanchaEstado;
 
   @ApiProperty({
-    description: 'URL de la imagen de la cancha',
-    example: 'https://example.com/cancha.jpg',
+    description: "URL de la imagen de la cancha",
+    example: "https://example.com/cancha.jpg",
     required: false,
   })
   @IsUrl()
