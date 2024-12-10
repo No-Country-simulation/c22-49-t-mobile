@@ -10,7 +10,7 @@ export class Cancha {
   nombre: string;
 
   @Prop({ required: true })
-  ubicación: string;
+  ubicacion: string;
 
   @Prop({ required: true, enum: Deporte })
   tipo: Deporte;

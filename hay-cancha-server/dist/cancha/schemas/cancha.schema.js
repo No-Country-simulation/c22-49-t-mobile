@@ -22,7 +22,7 @@ __decorate([
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
-], Cancha.prototype, "ubicaci\u00F3n", void 0);
+], Cancha.prototype, "ubicacion", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true, enum: enums_1.Deporte }),
     __metadata("design:type", String)

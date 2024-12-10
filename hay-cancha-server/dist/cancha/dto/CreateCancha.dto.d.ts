@@ -1,7 +1,7 @@
 import { CanchaEstado, Deporte } from "../enums/enums";
 export declare class CreateCanchaDto {
     nombre: string;
-    ubicación: string;
+    ubicacion: string;
     tipo: Deporte;
     precio_por_hora: number;
     horario_apertura: string;

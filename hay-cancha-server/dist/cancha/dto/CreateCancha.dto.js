@@ -33,7 +33,7 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], CreateCanchaDto.prototype, "ubicaci\u00F3n", void 0);
+], CreateCanchaDto.prototype, "ubicacion", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: "Tipo de cancha",

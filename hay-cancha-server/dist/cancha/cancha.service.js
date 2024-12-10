@@ -27,15 +27,26 @@ let CanchaService = class CanchaService {
             return newCancha;
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException('Error al crear el producto');
+            throw new common_1.InternalServerErrorException("Error al crear el producto");
         }
     }
-    async findAll() {
+    async findAll(filters) {
+        console.log(filters);
         try {
-            return this.canchaModel.find();
+            const query = {};
+            if (filters.ubicacion) {
+                query["ubicacion"] = { $regex: filters.ubicacion, $options: "i" };
+            }
+            if (filters.tipo) {
+                query["tipo"] = filters.tipo;
+            }
+            if (filters.precio_por_hora) {
+                query["precio_por_hora"] = { $lte: filters.precio_por_hora };
+            }
+            return this.canchaModel.find(query);
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException('Error al pedir las canchas');
+            throw new common_1.InternalServerErrorException("Error al pedir las canchas");
         }
     }
 };

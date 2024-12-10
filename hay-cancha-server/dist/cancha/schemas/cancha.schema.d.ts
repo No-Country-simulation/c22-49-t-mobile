@@ -3,7 +3,7 @@ import { CanchaEstado, Deporte } from "../enums/enums";
 export type CanchaDocument = Cancha & Document;
 export declare class Cancha {
     nombre: string;
-    ubicación: string;
+    ubicacion: string;
     tipo: Deporte;
     precio_por_hora: number;
     horario_apertura: string;

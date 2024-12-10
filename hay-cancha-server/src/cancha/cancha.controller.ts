@@ -1,37 +1,21 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Put,
-  Query,
-  Req,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
-import { CanchaService } from './cancha.service';
-import { ApiTags } from '@nestjs/swagger';
-import { CreateCanchaDto } from './dto/CreateCancha.dto';
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
+import { CanchaService } from "./cancha.service";
+import { CreateCanchaDto } from "./dto/CreateCancha.dto";
+import { CanchaFiltersDto } from "./dto/CanchaFilters.dto";
 
-@ApiTags('Cancha')
-@Controller('cancha')
+@ApiTags("Cancha")
+@Controller("cancha")
 export class CanchaController {
   constructor(private readonly canchaService: CanchaService) {}
 
   @Post()
-  async create(@Body()createCanchaDto: CreateCanchaDto){
-    return this.canchaService.create(createCanchaDto)
+  async create(@Body() createCanchaDto: CreateCanchaDto) {
+    return this.canchaService.create(createCanchaDto);
   }
 
   @Get()
-  async findAll(){
-    return this.canchaService.findAll()
+  async findAll(@Query() filters: CanchaFiltersDto) {
+    return this.canchaService.findAll(filters);
   }
-/*   @Get()
-  getFilters(@Query() filters: any) {
-    return this.canchaService.getFilters(filters);
-  } */
 }

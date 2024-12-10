@@ -14,9 +14,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CanchaController = void 0;
 const common_1 = require("@nestjs/common");
-const cancha_service_1 = require("./cancha.service");
 const swagger_1 = require("@nestjs/swagger");
+const cancha_service_1 = require("./cancha.service");
 const CreateCancha_dto_1 = require("./dto/CreateCancha.dto");
+const CanchaFilters_dto_1 = require("./dto/CanchaFilters.dto");
 let CanchaController = class CanchaController {
     constructor(canchaService) {
         this.canchaService = canchaService;
@@ -24,8 +25,8 @@ let CanchaController = class CanchaController {
     async create(createCanchaDto) {
         return this.canchaService.create(createCanchaDto);
     }
-    async findAll() {
-        return this.canchaService.findAll();
+    async findAll(filters) {
+        return this.canchaService.findAll(filters);
     }
 };
 exports.CanchaController = CanchaController;
@@ -38,13 +39,14 @@ __decorate([
 ], CanchaController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [CanchaFilters_dto_1.CanchaFiltersDto]),
     __metadata("design:returntype", Promise)
 ], CanchaController.prototype, "findAll", null);
 exports.CanchaController = CanchaController = __decorate([
-    (0, swagger_1.ApiTags)('Cancha'),
-    (0, common_1.Controller)('cancha'),
+    (0, swagger_1.ApiTags)("Cancha"),
+    (0, common_1.Controller)("cancha"),
     __metadata("design:paramtypes", [cancha_service_1.CanchaService])
 ], CanchaController);
 //# sourceMappingURL=cancha.controller.js.map

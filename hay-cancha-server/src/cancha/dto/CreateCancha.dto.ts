@@ -24,7 +24,7 @@ export class CreateCanchaDto {
   })
   @IsString()
   @IsNotEmpty()
-  ubicación: string;
+  ubicacion: string;
 
   @ApiProperty({
     description: "Tipo de cancha",

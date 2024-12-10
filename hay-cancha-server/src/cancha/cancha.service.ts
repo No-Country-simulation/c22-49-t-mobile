@@ -1,8 +1,14 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { CreateCanchaDto } from './dto/CreateCancha.dto';
-import { Cancha } from './schemas/cancha.schema';
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { CreateCanchaDto } from "./dto/CreateCancha.dto";
+import { Cancha } from "./schemas/cancha.schema";
+
+interface CanchaFilters {
+  ubicacion?: string;
+  tipo?: string;
+  precio_por_hora?: number;
+}
 
 @Injectable()
 export class CanchaService {
@@ -17,25 +23,33 @@ export class CanchaService {
       const newCancha = await this.canchaModel.create(createCancha);
       return newCancha;
     } catch (error) {
-      throw new InternalServerErrorException('Error al crear el producto');
+      throw new InternalServerErrorException("Error al crear el producto");
     }
   }
 
-  async findAll(): Promise<Cancha[]> {
+  async findAll(filters: CanchaFilters): Promise<Cancha[]> {
+    console.log(filters);
+    
     try {
-      return this.canchaModel.find();
+      // Puedes aplicar los filtros a tu consulta de Mongoose
+      const query: any = {};
+
+      if (filters.ubicacion) {
+        query["ubicacion"] = { $regex: filters.ubicacion, $options: "i" };
+      }
+
+      if (filters.tipo) {
+        query["tipo"] = filters.tipo; 
+      }
+
+      if (filters.precio_por_hora) {
+        query["precio_por_hora"] = { $lte: filters.precio_por_hora };
+      }
+
+      // Realiza la consulta
+      return this.canchaModel.find(query);
     } catch (error) {
-      throw new InternalServerErrorException('Error al pedir las canchas');
+      throw new InternalServerErrorException("Error al pedir las canchas");
     }
   }
-
-  /*   getFilters(filters: any) {
-    return this.canchas.filter((cancha) => {
-      return (
-        (!filters.location || cancha.location.includes(filters.location)) &&
-        (!filters.price || cancha.price <= filters.price) &&
-        (!filters.players || cancha.players === filters.players)
-      );
-    });
-  } */
 }
