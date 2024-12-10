@@ -9,36 +9,51 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CanchaSchema = exports.Cancha = void 0;
+exports.CanchaSchema = exports.Cancha = exports.AddressSchema = exports.Address = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const enums_1 = require("../enums/enums");
+let Address = class Address {
+};
+exports.Address = Address;
+__decorate([
+    (0, mongoose_1.Prop)({ required: true }),
+    __metadata("design:type", String)
+], Address.prototype, "streetName", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ required: true }),
+    __metadata("design:type", Number)
+], Address.prototype, "streetNumber", void 0);
+exports.Address = Address = __decorate([
+    (0, mongoose_1.Schema)({ timestamps: false })
+], Address);
+exports.AddressSchema = mongoose_1.SchemaFactory.createForClass(Address);
 let Cancha = class Cancha {
 };
 exports.Cancha = Cancha;
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
-], Cancha.prototype, "nombre", void 0);
+], Cancha.prototype, "name", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
-], Cancha.prototype, "ubicacion", void 0);
+], Cancha.prototype, "location", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true, enum: enums_1.Deporte }),
     __metadata("design:type", String)
-], Cancha.prototype, "tipo", void 0);
+], Cancha.prototype, "type", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", Number)
-], Cancha.prototype, "precio_por_hora", void 0);
+], Cancha.prototype, "price_per_hour", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
-], Cancha.prototype, "horario_apertura", void 0);
+], Cancha.prototype, "opening_hours", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
-], Cancha.prototype, "horario_cierre", void 0);
+], Cancha.prototype, "closing_time", void 0);
 __decorate([
     (0, mongoose_1.Prop)({
         required: true,
@@ -46,11 +61,15 @@ __decorate([
         default: enums_1.CanchaEstado.DISPONIBLE,
     }),
     __metadata("design:type", String)
-], Cancha.prototype, "estado", void 0);
+], Cancha.prototype, "state", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: false }),
-    __metadata("design:type", String)
-], Cancha.prototype, "imagen", void 0);
+    (0, mongoose_1.Prop)({ required: false, type: [String] }),
+    __metadata("design:type", Array)
+], Cancha.prototype, "images", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ required: true, type: exports.AddressSchema }),
+    __metadata("design:type", Address)
+], Cancha.prototype, "address", void 0);
 exports.Cancha = Cancha = __decorate([
     (0, mongoose_1.Schema)({ timestamps: true })
 ], Cancha);

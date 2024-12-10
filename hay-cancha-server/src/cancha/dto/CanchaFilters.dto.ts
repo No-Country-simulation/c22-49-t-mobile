@@ -9,7 +9,7 @@ export class CanchaFiltersDto {
   })
   @IsOptional()
   @IsString()
-  ubicacion?: string;
+  location?: string;
 
   @ApiProperty({
     description: "Filtra las canchas por tipo",
@@ -18,7 +18,7 @@ export class CanchaFiltersDto {
   })
   @IsOptional()
   @IsString()
-  tipo?: string;
+  type?: string;
 
   @ApiProperty({
     description: "Filtra las canchas por precio por hora",
@@ -27,5 +27,5 @@ export class CanchaFiltersDto {
   })
   @IsOptional()
   @IsNumber()
-  precio_por_hora?: number;
+  price_per_hour?: number;
 }

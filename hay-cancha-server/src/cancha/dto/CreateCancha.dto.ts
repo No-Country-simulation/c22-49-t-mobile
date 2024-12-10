@@ -1,30 +1,51 @@
 import { ApiProperty } from "@nestjs/swagger";
 import {
+  IsArray,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
-  IsNumber,
   IsUrl,
+  ValidateNested,
 } from "class-validator";
 import { CanchaEstado, Deporte } from "../enums/enums";
+import { Type } from "class-transformer";
+
+export class AddressDto {
+  @ApiProperty({
+    description: "Nombre de la calle",
+    example: "Av. Siempre Viva",
+  })
+  @IsString()
+  @IsNotEmpty()
+  streetName: string;
+
+  @ApiProperty({
+    description: "Altura de la calle",
+    example: 123,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  streetNumber: number;
+}
 
 export class CreateCanchaDto {
   @ApiProperty({
     description: "Nombre de la cancha",
-    example: "Cancha Principal",
+    example: "Futbol",
   })
   @IsString()
   @IsNotEmpty()
-  nombre: string;
+  name: string;
 
   @ApiProperty({
     description: "Ubicación de la cancha",
-    example: "Av. Siempre Viva 123",
+    example: "Palermo",
   })
   @IsString()
   @IsNotEmpty()
-  ubicacion: string;
+  location: string;
 
   @ApiProperty({
     description: "Tipo de cancha",
@@ -33,15 +54,15 @@ export class CreateCanchaDto {
   })
   @IsEnum(Deporte)
   @IsNotEmpty()
-  tipo: Deporte;
+  type: Deporte;
 
   @ApiProperty({
     description: "Precio por hora de uso de la cancha",
-    example: 120.5,
+    example: 20000,
   })
   @IsNumber()
   @IsNotEmpty()
-  precio_por_hora: number;
+  price_per_hour: number;
 
   @ApiProperty({
     description: "Horario de apertura de la cancha (formato HH:mm)",
@@ -49,7 +70,7 @@ export class CreateCanchaDto {
   })
   @IsString()
   @IsNotEmpty()
-  horario_apertura: string;
+  opening_hours: string;
 
   @ApiProperty({
     description: "Horario de cierre de la cancha (formato HH:mm)",
@@ -57,7 +78,7 @@ export class CreateCanchaDto {
   })
   @IsString()
   @IsNotEmpty()
-  horario_cierre: string;
+  closing_time: string;
 
   @ApiProperty({
     description: "Estado actual de la cancha",
@@ -67,14 +88,27 @@ export class CreateCanchaDto {
   })
   @IsEnum(CanchaEstado)
   @IsNotEmpty()
-  estado: CanchaEstado;
+  state: CanchaEstado;
 
   @ApiProperty({
-    description: "URL de la imagen de la cancha",
-    example: "https://example.com/cancha.jpg",
+    description: "URLs de las imágenes de la cancha",
+    example: [
+      "https://www.generallavalle.gob.ar/fotos/noticias/futbol-protocolo-deportes-49.jpg",
+      "https://www.generallavalle.gob.ar/fotos/noticias/futbol-protocolo-deportes-49.jpg",
+    ],
     required: false,
   })
-  @IsUrl()
+  @IsArray()
   @IsOptional()
-  imagen?: string;
+  @IsUrl({}, { each: true })
+  images?: string[];
+
+  @ApiProperty({
+    description: "Dirección de la cancha",
+    type: AddressDto,
+  })
+  @ValidateNested()
+  @Type(() => AddressDto)
+  @IsNotEmpty()
+  address: AddressDto;
 }

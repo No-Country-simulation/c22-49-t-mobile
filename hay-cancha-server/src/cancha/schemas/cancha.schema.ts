@@ -4,35 +4,49 @@ import { CanchaEstado, Deporte } from "../enums/enums";
 
 export type CanchaDocument = Cancha & Document;
 
+@Schema({ timestamps: false })
+export class Address {
+  @Prop({ required: true })
+  streetName: string;
+
+  @Prop({ required: true })
+  streetNumber: number;
+}
+
+export const AddressSchema = SchemaFactory.createForClass(Address);
+
 @Schema({ timestamps: true })
 export class Cancha {
   @Prop({ required: true })
-  nombre: string;
+  name: string;
 
   @Prop({ required: true })
-  ubicacion: string;
+  location: string;
 
   @Prop({ required: true, enum: Deporte })
-  tipo: Deporte;
+  type: Deporte;
 
   @Prop({ required: true })
-  precio_por_hora: number;
+  price_per_hour: number;
 
   @Prop({ required: true })
-  horario_apertura: string;
+  opening_hours: string;
 
   @Prop({ required: true })
-  horario_cierre: string;
+  closing_time: string;
 
   @Prop({
     required: true,
     enum: CanchaEstado,
     default: CanchaEstado.DISPONIBLE,
   })
-  estado: CanchaEstado;
+  state: CanchaEstado;
 
-  @Prop({ required: false })
-  imagen?: string;
+  @Prop({ required: false, type: [String] })
+  images?: string[];
+
+  @Prop({ required: true, type: AddressSchema })
+  address: Address;
 }
 
 export const CanchaSchema = SchemaFactory.createForClass(Cancha);

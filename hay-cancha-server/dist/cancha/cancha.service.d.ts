@@ -2,9 +2,9 @@ import { Model } from "mongoose";
 import { CreateCanchaDto } from "./dto/CreateCancha.dto";
 import { Cancha } from "./schemas/cancha.schema";
 interface CanchaFilters {
-    ubicacion?: string;
-    tipo?: string;
-    precio_por_hora?: number;
+    location?: string;
+    type?: string;
+    price_per_hour?: number;
 }
 export declare class CanchaService {
     private canchaModel;

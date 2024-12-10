@@ -34,14 +34,15 @@ let CanchaService = class CanchaService {
         console.log(filters);
         try {
             const query = {};
-            if (filters.ubicacion) {
-                query["ubicacion"] = { $regex: filters.ubicacion, $options: "i" };
+            if (filters.location) {
+                query["location"] = { $regex: filters.location, $options: "i" };
             }
-            if (filters.tipo) {
-                query["tipo"] = filters.tipo;
+            if (filters.type) {
+                query["type"] = filters.type;
             }
-            if (filters.precio_por_hora) {
-                query["precio_por_hora"] = { $lte: filters.precio_por_hora };
+            console.log(filters);
+            if (filters.price_per_hour) {
+                query["price_per_hour"] = { $lte: filters.price_per_hour };
             }
             return this.canchaModel.find(query);
         }
