@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
@@ -37,6 +41,40 @@ export class UserService {
     const payload = { sub: user._id, name: user.name, email: user.email };
     const token = this.jwtService.sign(payload);
 
+    return {
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    };
+  }
+
+  async login(loginUserDto: { email: string; password: string }) {
+    const { email, password } = loginUserDto;
+
+    // console.log({email,password});
+
+    // Buscar al usuario por email
+    const user = await this.userModel.findOne({ email });
+
+    if (!user) {
+      throw new UnauthorizedException("Invalid email or password");
+    }
+
+    // Verificar si la contraseña es correcta
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException("Invalid email or password");
+    }
+
+    // Generar el token
+    const payload = { sub: user._id, name: user.name, email: user.email };
+    const token = this.jwtService.sign(payload);
+
+    // Devolver el token y los datos del usuario
     return {
       token,
       user: {
