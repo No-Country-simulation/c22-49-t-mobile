@@ -34,10 +34,12 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+dist/tsconfig.build.tsbuildinfo
 
 app-example
 
 # Firebase
 /firebase-key.json
 /filtrosCanchas/
+
 

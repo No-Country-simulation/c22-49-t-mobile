@@ -7,12 +7,14 @@ import {
   Image,
   ActivityIndicator,
   FlatList,
-  StyleSheet
+  StyleSheet,
+  Keyboard
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import useFetchFilters from '../hooks/useFetchFilters'
 import ImageSlider from '../components/Slider/ImageSlider'
+import { SearchBar } from 'react-native-screens'
 
 const bannerMessages = [
   'Reserva tu cancha ahora',
@@ -29,6 +31,7 @@ export default function Home () {
   })
 
   const [filtersVisible, setFiltersVisible] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
   const { filters, loading, error } = useFetchFilters(params)
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
 
@@ -45,6 +48,16 @@ export default function Home () {
       sport: ''
     })
     setFiltersVisible(false)
+  }
+
+  const handleSearch = () => {
+    Keyboard.dismiss()
+    setParams(prev => ({
+      ...prev,
+      location: searchTerm.trim(),
+      sport: searchTerm.trim()
+    }))
+    setFiltersVisible(true)
   }
 
   useEffect(() => {
@@ -72,14 +85,25 @@ export default function Home () {
 
       {/* Barra de búsqueda, filtros y botón */}
       <View style={styles.filterRow}>
-        {/* Barra de búsqueda */}
-        <TextInput
-          style={styles.searchBar}
-          placeholder='Buscar...'
-          value={params.location}
-          onChangeText={text => updateFilters('location', text)}
-        />
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchBar}
+            placeholder='Buscar ubicación o deporte...'
+            value={searchTerm}
+            onChangeText={text => setSearchTerm(text)} // Actualiza el término de búsqueda
+            onSubmitEditing={handleSearch} // Buscar al presionar Enter
+            placeholderTextColor='#999' // Color del texto placeholder Buscar al presionar Enter
+          />
+          <TouchableOpacity onPress={handleSearch} style={styles.searchIcon}>
+            <Icon name='magnify' size={20} color='#666' />{' '}
+            {/* Ícono de lupa más pequeño */}
+          </TouchableOpacity>
+        </View>
+      </View>
 
+      {/* Filtros */}
+      <View style={styles.filterRow}>
+        {' '}
         {/* Filtro por ubicación */}
         <Picker
           selectedValue={params.location}
@@ -89,8 +113,10 @@ export default function Home () {
           <Picker.Item label='Ubicación' value='' />
           <Picker.Item label='Recoleta' value='Recoleta' />
           <Picker.Item label='Palermo' value='Palermo' />
+          <Picker.Item label='Belgrano' value='Belgrano' />
+          <Picker.Item label='Agronomía' value='Agronomía' />
+          <Picker.Item label='Barracas' value='Barracas' />
         </Picker>
-
         <Picker
           selectedValue={params.sport}
           onValueChange={value => updateFilters('sport', value)}
@@ -101,9 +127,7 @@ export default function Home () {
           <Picker.Item label='Basquetbol' value='Basquetbol' />
           <Picker.Item label='Tenis' value='Tenis' />
           <Picker.Item label='Pádel' value='Pádel' />
-          <Picker.Item label='Voleibol' value='Voleibol' />
         </Picker>
-
         {/* Filtro por cantidad de jugadores */}
         {/* <Picker
           selectedValue={params.players}
@@ -116,7 +140,6 @@ export default function Home () {
           <Picker.Item label='10' value='10' />
           <Picker.Item label='12' value='12' />
         </Picker> */}
-
         {/* Botón de limpiar filtros */}
         <TouchableOpacity onPress={clearFilters} style={styles.clearButton}>
           <Icon name='broom' size={24} color='#fff' />
@@ -130,11 +153,17 @@ export default function Home () {
           {error && <Text style={styles.error}>{error}</Text>}
           {!loading && !error && (
             <FlatList
-              data={filters}
+              data={filters.filter(
+                item =>
+                  item.location
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase()) || // Filtra por ubicación
+                  item.sport.toLowerCase().includes(searchTerm.toLowerCase()) // Filtra por deporte
+              )}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({ item }) => (
                 <View style={styles.card}>
-                  <Image source={item.image} style={styles.cardImage} />{' '}
+                  <Image source={item.image} style={styles.cardImage} />
                   <View style={styles.cardContent}>
                     <Text style={styles.cardTitle}>{item.name}</Text>
                     <Text>Ubicación: {item.location}</Text>
@@ -195,17 +224,33 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     flex: 1,
-    height: 25,
+    height: 40,
+    color: '#333', // Color del texto
+    paddingHorizontal: 8,
+    backgroundColor: 'transparent' // Sin fondo
+  },
+  searchContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#e0e0e0', // Borde más claro
+    borderColor: '#e0e0e0', // Borde claro
     borderRadius: 8,
     paddingHorizontal: 8,
-    backgroundColor: '#fafafa', // Fondo más claro para diferenciar
-    color: '#333', // Color del texto para buen contraste
+    backgroundColor: '#fafafa', // Fondo claro
     shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowRadius: 2,
-    elevation: 1 // Sutil sombreado para destacar
+    elevation: 1 // Sutil sombra
+  },
+  searchIcon: {
+    padding: 4 // Espaciado interno para que no se vea comprimido
+  },
+  searchButton: {
+    marginLeft: 8,
+    backgroundColor: '#007bff',
+    borderRadius: 8,
+    padding: 8
   },
   picker: {
     flex: 1,

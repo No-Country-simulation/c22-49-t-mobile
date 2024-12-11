@@ -11,6 +11,7 @@ export class FilterController {
   }
 }
 
+<<<<<<< HEAD
 
 
 
@@ -27,6 +28,8 @@ export class FilterController {
 //   }
 // }
 
+=======
+>>>>>>> feature/sqlite-filters
 //su función principal es coordinar la interacción entre las rutas y los servicios.
 // Ej. Si el usuario realiza una solicitud GET/filters para obtener filtros específicos,
 // el controlador FilterController recibe esa solicitu y llama al método getFilters del servicio FilterService,
