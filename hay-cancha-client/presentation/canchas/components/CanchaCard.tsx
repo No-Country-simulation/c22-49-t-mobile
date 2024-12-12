@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 
 const placeholderImage = require("../../../assets/images/no-cancha-image.png");
 
@@ -20,7 +20,9 @@ const CanchaCard = ({ price_per_hour, location, images }: Props) => {
         <Text style={styles.precio}>
           Precio por hora: <Text style={styles.bold}>${price_per_hour}</Text>
         </Text>
-        <Text style={styles.ubicacion}>Ubicación: {location}</Text>
+        <Text style={styles.ubicacion}>
+          Ubicación: <Text style={styles.bold}>{location}</Text>
+        </Text>
       </View>
     </View>
   );
@@ -28,27 +30,34 @@ const CanchaCard = ({ price_per_hour, location, images }: Props) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    maxWidth:130,
+    flex:1,
     backgroundColor: "#fff",
     borderRadius: 10,
-    elevation: 6,
+    elevation: 4,
+    margin: 4,
     overflow: "hidden",
-    margin:4
+    position: "relative", 
+    height: 280, 
   },
   image: {
     width: "100%",
-    height: 150,
+    height: "100%",
   },
   infoContainer: {
-    padding: 15,
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    padding: 10,
   },
   precio: {
     fontSize: 14,
+    color: "#fff",
     marginBottom: 5,
   },
   ubicacion: {
     fontSize: 14,
-    color: "#555",
+    color: "#ccc",
   },
   bold: {
     fontWeight: "bold",

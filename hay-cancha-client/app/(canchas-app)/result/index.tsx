@@ -37,7 +37,7 @@ const ResultadoPage = () => {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
-          No hay resultados que coincidan con la bsuqueda...
+          No hay resultados que coincidan con la búsqueda...
         </Text>
       </View>
     );
@@ -50,12 +50,13 @@ const ResultadoPage = () => {
         keyExtractor={(item) => item._id.toString()}
         showsVerticalScrollIndicator={false}
         numColumns={2} // Dos columnas
-        contentContainerStyle={styles.listContainer} 
+        contentContainerStyle={styles.listContainer}
+        columnWrapperStyle={styles.row} // Para distribuir uniformemente
         renderItem={({ item }) => (
           <CanchaCard
             price_per_hour={item.price_per_hour}
             location={item.location}
-            images={item.images || "https://via.placeholder.com/150"} 
+            images={item.images || "https://via.placeholder.com/150"}
           />
         )}
       />
@@ -66,27 +67,21 @@ const ResultadoPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 20,
+    paddingHorizontal: 8,
+    paddingTop: 10,
+    backgroundColor: "#f5f5f5",
   },
   listContainer: {
-    paddingVertical: 10,
-    justifyContent: "center", 
+    marginHorizontal:8,
+    paddingBottom: 20,
+  },
+  row: {
+    justifyContent: "space-between", 
+    marginBottom: 8,
   },
   text: {
     fontSize: 18,
-    marginBottom: 10,
-  },
-  item: {
-    marginVertical: 10,
-    padding: 15,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 8,
-    width: "100%",
-  },
-  itemText: {
-    fontSize: 16,
+    textAlign: "center",
   },
 });
 
