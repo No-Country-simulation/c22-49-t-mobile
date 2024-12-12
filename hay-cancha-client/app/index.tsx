@@ -190,26 +190,26 @@ export default function Home () {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 12,
     backgroundColor: '#f9f9f9'
   },
   banner: {
-    marginBottom: 16,
+    marginBottom: 8,
     alignItems: 'center',
     justifyContent: 'center'
   },
   bannerImage: {
     width: '100%',
-    height: 200,
+    height: 180,
     resizeMode: 'cover',
     borderRadius: 8
   },
   bannerText: {
     position: 'absolute',
-    bottom: 16,
-    left: 16,
+    bottom: 8,
+    left: 8,
     color: '#fff',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold'
   },
   filterRow: {
@@ -223,6 +223,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 8,
     borderWidth: 1,
     borderColor: '#e0e0e0',
     borderRadius: 8,
@@ -232,7 +233,7 @@ const styles = StyleSheet.create({
   searchBar: {
     flex: 1,
     height: 40,
-    fontSize: 16,
+    fontSize: 14,
     color: '#333',
     paddingHorizontal: 8,
     outlineColor: 'transparent'
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4
   },
   clearButton: {
-    width: 50,
+    width: 40,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#007bff',
@@ -255,29 +256,29 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    padding: 16,
-    marginBottom: 16,
+    padding: 12,
+    marginBottom: 8,
     borderRadius: 8,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 2,
+    elevation: 1,
     alignItems: 'center'
   },
   cardImage: {
-    width: 120,
-    height: 120,
+    width: 100,
+    height: 100,
     borderRadius: 8,
-    marginRight: 16,
+    marginRight: 12,
     resizeMode: 'cover'
   },
   cardContent: {
     flex: 1
   },
   cardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8
+    fontSize: 16,
+    fontWeight: 'bold'
+    //marginBottom: 8
   },
   error: {
     color: 'red',
