@@ -1,7 +1,7 @@
 import { useCanchaStore } from "@/presentation/canchas/store/useCanchaStore";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 const CanchaScreen = () => {
   const { id } = useLocalSearchParams();
@@ -28,7 +28,7 @@ const CanchaScreen = () => {
   if (loading) {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Cargando cancha...</Text>
+        <ActivityIndicator size={24}/>
       </View>
     );
   }
