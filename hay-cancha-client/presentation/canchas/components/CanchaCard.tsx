@@ -8,7 +8,7 @@ interface Props {
   canchaId:string,
   price_per_hour: number;
   location: string;
-  images?: string;
+  images?: string[];
 }
 
 const CanchaCard = ({ canchaId,price_per_hour, location, images }: Props) => {

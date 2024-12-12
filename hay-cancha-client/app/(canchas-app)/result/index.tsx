@@ -15,7 +15,7 @@ const ResultadoPage = () => {
     return () => {
       clearCanchas();
     };
-  }, []);
+  }, [location,type]);
 
   if (loading) {
     return (
@@ -43,6 +43,8 @@ const ResultadoPage = () => {
     );
   }
 
+
+  
   return (
     <ThemedView style={styles.container}>
       <FlatList
@@ -54,10 +56,10 @@ const ResultadoPage = () => {
         columnWrapperStyle={styles.row} // Para distribuir uniformemente
         renderItem={({ item }) => (
           <CanchaCard
-          canchaId={item._id}
+            canchaId={item._id}
             price_per_hour={item.price_per_hour}
             location={item.location}
-            images={item.images || "https://via.placeholder.com/150"}
+            images={item.images  || "https://via.placeholder.com/150"}
           />
         )}
       />

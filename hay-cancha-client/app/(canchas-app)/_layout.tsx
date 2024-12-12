@@ -53,16 +53,16 @@ const CheckAuthenticationLayout = () => {
           headerLeft: () => <LogoutIconButton />,
         }}
       />
+       <Stack.Screen
+        name="result/index"
+        options={{
+          title: "Filtro de las canchas",
+        }}
+      />
       <Stack.Screen
         name="cancha/[id]"
         options={{
           title: "Cancha",
-        }}
-      />
-      <Stack.Screen
-        name="result/index"
-        options={{
-          title: "Filtro de las canchas",
         }}
       />
     </Stack>
