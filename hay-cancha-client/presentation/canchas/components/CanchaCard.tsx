@@ -1,17 +1,23 @@
+import { router } from "expo-router";
 import React from "react";
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const placeholderImage = require("../../../assets/images/no-cancha-image.png");
 
 interface Props {
+  canchaId:string,
   price_per_hour: number;
   location: string;
   images?: string;
 }
 
-const CanchaCard = ({ price_per_hour, location, images }: Props) => {
+const CanchaCard = ({ canchaId,price_per_hour, location, images }: Props) => {
+  const handlePress = () => {
+    router.push(`/(canchas-app)/cancha/${canchaId}`)
+  };
+
   return (
-    <View style={styles.cardContainer}>
+    <TouchableOpacity onPress={handlePress} style={styles.cardContainer}>
       <Image
         source={images ? { uri: images[0] } : placeholderImage}
         style={styles.image}
@@ -24,7 +30,7 @@ const CanchaCard = ({ price_per_hour, location, images }: Props) => {
           Ubicación: <Text style={styles.bold}>{location}</Text>
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

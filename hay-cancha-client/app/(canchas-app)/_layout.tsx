@@ -56,7 +56,7 @@ const CheckAuthenticationLayout = () => {
       <Stack.Screen
         name="cancha/[id]"
         options={{
-          title: "Producto",
+          title: "Cancha",
         }}
       />
       <Stack.Screen

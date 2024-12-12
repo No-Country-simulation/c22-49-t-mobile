@@ -54,6 +54,7 @@ const ResultadoPage = () => {
         columnWrapperStyle={styles.row} // Para distribuir uniformemente
         renderItem={({ item }) => (
           <CanchaCard
+          canchaId={item._id}
             price_per_hour={item.price_per_hour}
             location={item.location}
             images={item.images || "https://via.placeholder.com/150"}
