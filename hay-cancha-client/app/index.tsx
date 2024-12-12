@@ -8,7 +8,8 @@ import {
   ActivityIndicator,
   FlatList,
   StyleSheet,
-  Keyboard
+  Keyboard,
+  Platform
 } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -129,29 +130,33 @@ export default function Home () {
 
       {/* Filtros */}
       <View style={styles.filterRow}>
-        <Picker
-          selectedValue={params.location}
-          onValueChange={value => updateFilters('location', value)}
-          style={styles.picker}
-        >
-          <Picker.Item label='Ubicación' value='' />
-          <Picker.Item label='Recoleta' value='Recoleta' />
-          <Picker.Item label='Palermo' value='Palermo' />
-          <Picker.Item label='Belgrano' value='Belgrano' />
-          <Picker.Item label='Agronomía' value='Agronomía' />
-          <Picker.Item label='Barracas' value='Barracas' />
-        </Picker>
-        <Picker
-          selectedValue={params.sport}
-          onValueChange={value => updateFilters('sport', value)}
-          style={styles.picker}
-        >
-          <Picker.Item label='Deporte' value='' />
-          <Picker.Item label='Futbol' value='Futbol' />
-          <Picker.Item label='Basquetbol' value='Basquetbol' />
-          <Picker.Item label='Tenis' value='Tenis' />
-          <Picker.Item label='Pádel' value='Pádel' />
-        </Picker>
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={params.location}
+            onValueChange={value => updateFilters('location', value)}
+            style={styles.picker}
+          >
+            <Picker.Item label='Ubicación' value='' />
+            <Picker.Item label='Recoleta' value='Recoleta' />
+            <Picker.Item label='Palermo' value='Palermo' />
+            <Picker.Item label='Belgrano' value='Belgrano' />
+            <Picker.Item label='Agronomía' value='Agronomía' />
+            <Picker.Item label='Barracas' value='Barracas' />
+          </Picker>
+        </View>
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={params.sport}
+            onValueChange={value => updateFilters('sport', value)}
+            style={styles.picker}
+          >
+            <Picker.Item label='Deporte' value='' />
+            <Picker.Item label='Futbol' value='Futbol' />
+            <Picker.Item label='Basquetbol' value='Basquetbol' />
+            <Picker.Item label='Tenis' value='Tenis' />
+            <Picker.Item label='Pádel' value='Pádel' />
+          </Picker>
+        </View>
         <TouchableOpacity onPress={clearFilters} style={styles.clearButton}>
           <Icon name='broom' size={24} color='#fff' />
         </TouchableOpacity>
@@ -242,9 +247,19 @@ const styles = StyleSheet.create({
     padding: 8
   },
   picker: {
-    flex: 1,
-    marginHorizontal: 4
+    width: '100%',
+    height: Platform.OS === 'android' ? 40 : 30
   },
+  pickerContainer: {
+    flex: 1,
+    marginHorizontal: 4,
+    alignItems: 'center'
+  },
+  //   pickerLabel: {
+  //     fontSize: 14,
+  //     marginBottom: 4,
+  //     color: '#666'
+  //   },
   clearButton: {
     width: 40,
     justifyContent: 'center',
