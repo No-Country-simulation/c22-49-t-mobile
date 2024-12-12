@@ -30,14 +30,9 @@ yarn-error.*
 *.pem
 
 # local env files
-# .env*.local
+.env*.local
 
 # typescript
 *.tsbuildinfo
 
 app-example
-
-# Firebase
-/firebase-key.json
-/filtrosCanchas/
-

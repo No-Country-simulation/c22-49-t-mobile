@@ -1,6 +1,6 @@
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { CreateCanchaDto } from "./dto/CreateCancha.dto";
 import { Cancha } from "./schemas/cancha.schema";
 
@@ -46,6 +46,24 @@ export class CanchaService {
       return this.canchaModel.find(query);
     } catch (error) {
       throw new InternalServerErrorException("Error al pedir las canchas");
+    }
+  }
+
+  async findOne(id:string){
+    if (!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('ID de cancha inválido');
+    }
+
+    try {
+      const cancha= await this.canchaModel.findById(id)
+      return cancha
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(
+        `Error al buscar la cancha de id: ${id}`,
+      );
     }
   }
 }

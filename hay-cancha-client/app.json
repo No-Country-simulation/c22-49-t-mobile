@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "hay-cancha",
-    "slug": "hay-cancha",
+    "name": "appcancha",
+    "slug": "appcancha",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
