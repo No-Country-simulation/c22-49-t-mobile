@@ -50,6 +50,21 @@ let CanchaService = class CanchaService {
             throw new common_1.InternalServerErrorException("Error al pedir las canchas");
         }
     }
+    async findOne(id) {
+        if (!mongoose_2.Types.ObjectId.isValid(id)) {
+            throw new common_1.BadRequestException('ID de cancha inválido');
+        }
+        try {
+            const cancha = await this.canchaModel.findById(id);
+            return cancha;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            throw new common_1.InternalServerErrorException(`Error al buscar la cancha de id: ${id}`);
+        }
+    }
 };
 exports.CanchaService = CanchaService;
 exports.CanchaService = CanchaService = __decorate([

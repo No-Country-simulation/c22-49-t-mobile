@@ -28,6 +28,9 @@ let CanchaController = class CanchaController {
     async findAll(filters) {
         return this.canchaService.findAll(filters);
     }
+    async findOne(id) {
+        return this.canchaService.findOne(id);
+    }
 };
 exports.CanchaController = CanchaController;
 __decorate([
@@ -44,6 +47,13 @@ __decorate([
     __metadata("design:paramtypes", [CanchaFilters_dto_1.CanchaFiltersDto]),
     __metadata("design:returntype", Promise)
 ], CanchaController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)(":id"),
+    __param(0, (0, common_1.Param)("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], CanchaController.prototype, "findOne", null);
 exports.CanchaController = CanchaController = __decorate([
     (0, swagger_1.ApiTags)("Cancha"),
     (0, common_1.Controller)("cancha"),
