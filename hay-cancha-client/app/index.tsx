@@ -15,10 +15,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import useFetchFilters from '../hooks/useFetchFilters'
 import ImageSlider from '../components/Slider/ImageSlider'
 
-const normalizeText = text => {
+// Normaliza el texto eliminando acentos y convirtiéndolo a minúsculas
+const normalizeText = (text: string) => {
   return text
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
+    .normalize('NFD') // Descompone los caracteres acentuados
+    .replace(/[\u0300-\u036f]/g, '') // Elimina los diacríticos
     .toLowerCase()
 }
 
@@ -38,12 +39,12 @@ export default function Home () {
 
   const [filtersVisible, setFiltersVisible] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
-  const [filteredData, setFilteredData] = useState([])
+  const [filteredData, setFilteredData] = useState<any[]>([])
   const { filters, loading, error } = useFetchFilters(params)
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
 
   // Actualiza los parámetros de los filtros
-  const updateFilters = (field, value) => {
+  const updateFilters = (field: keyof typeof params, value: string) => {
     setParams(prev => ({ ...prev, [field]: value }))
     setFiltersVisible(true)
   }
