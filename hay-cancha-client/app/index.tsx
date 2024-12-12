@@ -15,6 +15,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import useFetchFilters from '../hooks/useFetchFilters'
 import ImageSlider from '../components/Slider/ImageSlider'
 
+const normalizeText = text => {
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+}
+
 const bannerMessages = [
   'Reserva tu cancha ahora',
   'Encuentra las mejores canchas',
@@ -63,12 +70,13 @@ export default function Home () {
       return
     }
 
+    const normalizedSearchTerm = normalizeText(searchTerm)
+
     const results = filters.filter(
       item =>
-        item.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.sport.toLowerCase().includes(searchTerm.toLowerCase())
+        normalizeText(item.location).includes(normalizedSearchTerm) ||
+        normalizeText(item.sport).includes(normalizedSearchTerm)
     )
-
     setFilteredData(results)
   }
 
