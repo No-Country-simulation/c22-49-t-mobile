@@ -14,7 +14,6 @@ import { Picker } from '@react-native-picker/picker'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import useFetchFilters from '../hooks/useFetchFilters'
 import ImageSlider from '../components/Slider/ImageSlider'
-import { SearchBar } from 'react-native-screens'
 
 const bannerMessages = [
   'Reserva tu cancha ahora',
@@ -32,14 +31,17 @@ export default function Home () {
 
   const [filtersVisible, setFiltersVisible] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
+  const [filteredData, setFilteredData] = useState([])
   const { filters, loading, error } = useFetchFilters(params)
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
 
-  const updateFilters = (field: string, value: string) => {
+  // Actualiza los parámetros de los filtros
+  const updateFilters = (field, value) => {
     setParams(prev => ({ ...prev, [field]: value }))
-    setFiltersVisible(true) // Muestra las canchas al actualizar un filtro
+    setFiltersVisible(true)
   }
 
+  // Limpiar los filtros y búsqueda
   const clearFilters = () => {
     setParams({
       location: '',
@@ -48,24 +50,40 @@ export default function Home () {
       sport: ''
     })
     setFiltersVisible(false)
+    setSearchTerm('')
+    setFilteredData([])
   }
 
+  // Manejar la búsqueda en la barra de búsqueda
   const handleSearch = () => {
     Keyboard.dismiss()
-    setParams(prev => ({
-      ...prev,
-      location: searchTerm.trim(),
-      sport: searchTerm.trim()
-    }))
-    setFiltersVisible(true)
+
+    if (!searchTerm.trim()) {
+      setFilteredData(filters) // Mostrar todo si no hay término
+      return
+    }
+
+    const results = filters.filter(
+      item =>
+        item.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.sport.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+
+    setFilteredData(results)
   }
 
+  // Actualizar los resultados cuando cambian los filtros
+  useEffect(() => {
+    setFilteredData(filters)
+  }, [filters])
+
+  // Rotación automática del mensaje del banner
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentMessageIndex(
         prevIndex => (prevIndex + 1) % bannerMessages.length
       )
-    }, 3000) // Cambia cada 3 segundos
+    }, 3000)
 
     return () => clearInterval(interval)
   }, [])
@@ -79,32 +97,29 @@ export default function Home () {
           style={styles.bannerImage}
         />
         <Text style={styles.bannerText}>
-          {bannerMessages[currentMessageIndex]} {/* Mensaje dinámico */}
+          {bannerMessages[currentMessageIndex]}
         </Text>
       </View>
 
-      {/* Barra de búsqueda, filtros y botón */}
+      {/* Barra de búsqueda */}
       <View style={styles.filterRow}>
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.searchBar}
             placeholder='Buscar ubicación o deporte...'
             value={searchTerm}
-            onChangeText={text => setSearchTerm(text)} // Actualiza el término de búsqueda
-            onSubmitEditing={handleSearch} // Buscar al presionar Enter
-            placeholderTextColor='#999' // Color del texto placeholder Buscar al presionar Enter
+            onChangeText={setSearchTerm}
+            onSubmitEditing={handleSearch}
+            placeholderTextColor='#999'
           />
           <TouchableOpacity onPress={handleSearch} style={styles.searchIcon}>
-            <Icon name='magnify' size={20} color='#666' />{' '}
-            {/* Ícono de lupa más pequeño */}
+            <Icon name='magnify' size={20} color='#333' />
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Filtros */}
       <View style={styles.filterRow}>
-        {' '}
-        {/* Filtro por ubicación */}
         <Picker
           selectedValue={params.location}
           onValueChange={value => updateFilters('location', value)}
@@ -128,55 +143,35 @@ export default function Home () {
           <Picker.Item label='Tenis' value='Tenis' />
           <Picker.Item label='Pádel' value='Pádel' />
         </Picker>
-        {/* Filtro por cantidad de jugadores */}
-        {/* <Picker
-          selectedValue={params.players}
-          onValueChange={value => updateFilters('players', value)}
-          style={styles.picker}
-        >
-          <Picker.Item label='Jugadores' value='' />
-          <Picker.Item label='14' value='14' />
-          <Picker.Item label='4' value='4' />
-          <Picker.Item label='10' value='10' />
-          <Picker.Item label='12' value='12' />
-        </Picker> */}
-        {/* Botón de limpiar filtros */}
         <TouchableOpacity onPress={clearFilters} style={styles.clearButton}>
           <Icon name='broom' size={24} color='#fff' />
         </TouchableOpacity>
       </View>
 
-      {/* Lista de canchas */}
-      {filtersVisible && (
-        <View style={{ flex: 1, marginTop: 8 }}>
-          {loading && <ActivityIndicator size='large' color='#0000ff' />}
-          {error && <Text style={styles.error}>{error}</Text>}
-          {!loading && !error && (
-            <FlatList
-              data={filters.filter(
-                item =>
-                  item.location
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase()) || // Filtra por ubicación
-                  item.sport.toLowerCase().includes(searchTerm.toLowerCase()) // Filtra por deporte
-              )}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => (
-                <View style={styles.card}>
-                  <Image source={item.image} style={styles.cardImage} />
-                  <View style={styles.cardContent}>
-                    <Text style={styles.cardTitle}>{item.name}</Text>
-                    <Text>Ubicación: {item.location}</Text>
-                    <Text>Precio: ${item.price}</Text>
-                    <Text>Jugadores: {item.players}</Text>
-                    <Text>Deporte: {item.sport}</Text>
-                  </View>
+      {/* Lista de resultados */}
+      <View style={{ flex: 1, marginTop: 8 }}>
+        {loading && <ActivityIndicator size='large' color='#0000ff' />}
+        {error && <Text style={styles.error}>{error}</Text>}
+        {!loading && !error && (
+          <FlatList
+            data={filteredData.length > 0 ? filteredData : filters}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.card}>
+                <Image source={item.image} style={styles.cardImage} />
+                <View style={styles.cardContent}>
+                  <Text style={styles.cardTitle}>{item.name}</Text>
+                  <Text>Ubicación: {item.location}</Text>
+                  <Text>Precio: ${item.price}</Text>
+                  <Text>Jugadores: {item.players}</Text>
+                  <Text>Deporte: {item.sport}</Text>
                 </View>
-              )}
-            />
-          )}
-        </View>
-      )}
+              </View>
+            )}
+          />
+        )}
+      </View>
+
       {/* Slider de imágenes */}
       <ImageSlider />
     </View>
@@ -215,41 +210,25 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 8
   },
-  input: {
-    height: 40, // Asegura que todos los elementos tengan la misma altura
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    backgroundColor: '#fff'
-  },
-  searchBar: {
-    flex: 1,
-    height: 40,
-    color: '#333', // Color del texto
-    paddingHorizontal: 8,
-    backgroundColor: 'transparent' // Sin fondo
-  },
   searchContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#e0e0e0', // Borde claro
+    borderColor: '#e0e0e0',
     borderRadius: 8,
     paddingHorizontal: 8,
-    backgroundColor: '#fafafa', // Fondo claro
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1 // Sutil sombra
+    backgroundColor: '#fafafa'
+  },
+  searchBar: {
+    flex: 1,
+    height: 40,
+    fontSize: 16,
+    color: '#333',
+    paddingHorizontal: 8,
+    outlineColor: 'transparent'
   },
   searchIcon: {
-    padding: 4 // Espaciado interno para que no se vea comprimido
-  },
-  searchButton: {
-    marginLeft: 8,
-    backgroundColor: '#007bff',
-    borderRadius: 8,
     padding: 8
   },
   picker: {
@@ -257,7 +236,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4
   },
   clearButton: {
-    width: 50, // Botón más pequeño
+    width: 50,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#007bff',
@@ -278,10 +257,10 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     width: 120,
-    height: 120, // Altura de la imagen
+    height: 120,
     borderRadius: 8,
     marginRight: 16,
-    resizeMode: 'cover' // Ajuste de la imagen
+    resizeMode: 'cover'
   },
   cardContent: {
     flex: 1
