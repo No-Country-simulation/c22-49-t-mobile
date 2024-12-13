@@ -11,6 +11,25 @@ export class FilterController {
   }
 }
 
+<<<<<<< HEAD
+
+
+
+// import { Controller, Get, Query } from '@nestjs/common';
+// import { FilterService } from './filter.service';
+
+// @Controller('filters')
+// export class FilterController {
+//   constructor(private readonly filterService: FilterService) {}
+
+//   @Get()
+//   getFilters(@Query() filters: any) {
+//     return this.filterService.getFilters(filters);
+//   }
+// }
+
+=======
+>>>>>>> feature/sqlite-filters
 //su función principal es coordinar la interacción entre las rutas y los servicios.
 // Ej. Si el usuario realiza una solicitud GET/filters para obtener filtros específicos,
 // el controlador FilterController recibe esa solicitu y llama al método getFilters del servicio FilterService,

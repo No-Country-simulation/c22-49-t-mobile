@@ -1,12 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReservaEstado = exports.CanchaEstado = exports.CanchaTipo = void 0;
-var CanchaTipo;
-(function (CanchaTipo) {
-    CanchaTipo["CINCO"] = "5v5";
-    CanchaTipo["SIETE"] = "7v7";
-    CanchaTipo["ONCE"] = "11v11";
-})(CanchaTipo || (exports.CanchaTipo = CanchaTipo = {}));
+exports.ReservaEstado = exports.CanchaEstado = exports.Deporte = void 0;
+var Deporte;
+(function (Deporte) {
+    Deporte["FULTOL"] = "F\u00FAtbol";
+    Deporte["BASQUETBOL"] = "B\u00E1squetbol";
+    Deporte["TENIS"] = "Tenis";
+    Deporte["PADEL"] = "P\u00E1del";
+    Deporte["VOLEIBOL"] = "V\u00F3leibol";
+})(Deporte || (exports.Deporte = Deporte = {}));
 var CanchaEstado;
 (function (CanchaEstado) {
     CanchaEstado["DISPONIBLE"] = "disponible";
