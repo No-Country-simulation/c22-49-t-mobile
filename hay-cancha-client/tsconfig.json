@@ -3,20 +3,19 @@
     "strict": true,
     "strictNullChecks": true,
     "jsx": "react-native",
+    "module": "CommonJS",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "target": "esnext",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "declaration": false,
+    "composite": false,
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@assets/*": [
-        "./assets/*"
-      ]
+      "@/*": ["./*"],
+      "@assets/*": ["./assets/*"]
     }
   },
   "include": [
