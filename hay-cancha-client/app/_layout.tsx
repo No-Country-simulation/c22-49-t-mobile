@@ -14,6 +14,7 @@ import './global.css'
 import { Provider } from '@/ui'
 import { useSessionUser } from '@/hooks/useUserSession/useUserSession'
 import details from './details'
+import { CourtProvider } from '@/context/CourtContext'
 
 // Evitar que la pantalla de carga se oculte hasta que esté listo
 SplashScreen.preventAutoHideAsync()
@@ -36,30 +37,34 @@ export default function RootLayout () {
     }
   }, [loaded, loading])
 
-  if (!isAppReady) {
+  if (!loaded || !isAppReady) {
     return null
   }
 
   return (
-    <Provider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack screenOptions={{ headerShown: false }}>
-          {/* Si el usuario está autenticado, mostramos las pantallas de tabs */}
-          {isLoggedIn ? (
-            <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-          ) : (
-            // Si no está autenticado, mostramos la pantalla de login
-            <Stack.Screen name='auth' options={{ headerShown: false }} />
-          )}
-          <Stack.Screen name='+not-found' />
-          <Stack.Screen name='index' options={{ headerShown: false }} />
-          <Stack.Screen
-            name='details'
-            options={{ title: 'Detalles de la Cancha' }}
-          />
-        </Stack>
-        <StatusBar style='auto' />
-      </ThemeProvider>
-    </Provider>
+    <CourtProvider>
+      <Provider>
+        <ThemeProvider
+          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
+          <Stack screenOptions={{ headerShown: false }}>
+            {/* Si el usuario está autenticado, mostramos las pantallas de tabs */}
+            {isLoggedIn ? (
+              <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+            ) : (
+              // Si no está autenticado, mostramos la pantalla de login
+              <Stack.Screen name='auth' options={{ headerShown: false }} />
+            )}
+            <Stack.Screen name='+not-found' />
+            <Stack.Screen name='index' options={{ headerShown: false }} />
+            <Stack.Screen
+              name='details'
+              options={{ title: 'Detalles de la Cancha' }}
+            />
+          </Stack>
+          <StatusBar style='auto' />
+        </ThemeProvider>
+      </Provider>
+    </CourtProvider>
   )
 }

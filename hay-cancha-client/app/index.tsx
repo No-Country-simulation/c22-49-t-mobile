@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import useFetchFilters from '../hooks/useFetchFilters'
 import ImageSlider from '../components/Slider/ImageSlider'
 import { useNavigation } from '@react-navigation/native'
+import { useCourt } from '@/context/CourtContext'
 
 const { width } = Dimensions.get('window')
 
@@ -35,6 +36,7 @@ const bannerMessages = [
 
 export default function Home () {
   const navigation = useNavigation()
+  const { setSelectedCourt } = useCourt()
   const [params, setParams] = useState({
     location: '',
     price: '',
@@ -45,7 +47,11 @@ export default function Home () {
   const [filtersVisible, setFiltersVisible] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredData, setFilteredData] = useState<any[]>([])
+  console.log('filteredData:', filteredData)
   const { filters, loading, error } = useFetchFilters(params)
+
+  console.log('filters:', filters)
+
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
 
   const updateFilters = (field: keyof typeof params, value: string) => {
@@ -69,7 +75,7 @@ export default function Home () {
     Keyboard.dismiss()
 
     if (!searchTerm.trim()) {
-      setFilteredData(filters) // Mostrar todo si no hay término
+      setFilteredData(filters) // Usa los filtros originales si no hay término
       return
     }
 
@@ -80,14 +86,20 @@ export default function Home () {
         normalizeText(item.location).includes(normalizedSearchTerm) ||
         normalizeText(item.sport).includes(normalizedSearchTerm)
     )
+
+    if (results.length === 0) {
+      console.warn('No se encontraron resultados para la búsqueda:', searchTerm)
+    }
+
     setFilteredData(results)
   }
 
   const flatListRef = useRef<FlatList<any>>(null)
 
   useEffect(() => {
-    setFilteredData(filters)
-  }, [filters])
+    console.log('Filters cargados:', filters)
+    console.log('FilteredData inicializado:', filteredData)
+  }, [filters, filteredData])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -99,14 +111,14 @@ export default function Home () {
     return () => clearInterval(interval)
   }, [])
 
-  type Court = {
-    name: string
-    location: string
-    price: number
-    players: number
-    sport: string
-    image: any
-  }
+  //   type Court = {
+  //     name: string
+  //     location: string
+  //     price: number
+  //     players: number
+  //     sport: string
+  //     image: any
+  //   }
 
   return (
     <View style={styles.container}>
@@ -117,7 +129,7 @@ export default function Home () {
           style={styles.bannerImage}
         />
         <Text style={styles.bannerText}>
-          {bannerMessages[currentMessageIndex]}
+          {bannerMessages[Math.floor(Math.random() * bannerMessages.length)]}
         </Text>
       </View>
 
@@ -175,30 +187,35 @@ export default function Home () {
         {loading && <ActivityIndicator size='large' color='#0000ff' />}
         {error && <Text style={styles.error}>{error}</Text>}
         {!loading && !error && (
-          <FlatList<Court>
-            ref={flatListRef}
+          <FlatList
+            //ref={flatListRef}
             data={filteredData.length > 0 ? filteredData : filters}
             keyExtractor={(item, index) => index.toString()}
             getItemLayout={(data, index) => ({
-              length: 112, // Altura real del elemento
+              length: 112,
               offset: 112 * index,
               index
             })}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.card}
-                onPress={() => navigation.navigate('details', { court: item })}
-              >
-                <Image source={item.image} style={styles.cardImage} />
-                <View style={styles.cardContent}>
-                  <Text style={styles.cardTitle}>{item.name}</Text>
-                  <Text>Ubicación: {item.location}</Text>
-                  <Text>Precio: ${item.price}</Text>
-                  <Text>Jugadores: {item.players}</Text>
-                  <Text>Deporte: {item.sport}</Text>
-                </View>
-              </TouchableOpacity>
-            )}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity
+                  style={styles.card}
+                  onPress={() => {
+                    setSelectedCourt(item)
+                    navigation.navigate('details')
+                  }}
+                >
+                  <Image source={item.image} style={styles.cardImage} />
+                  <View style={styles.cardContent}>
+                    <Text style={styles.cardTitle}>{item.name}</Text>
+                    <Text>Ubicación: {item.location}</Text>
+                    <Text>Precio: ${item.price}</Text>
+                    <Text>Jugadores: {item.players}</Text>
+                    <Text>Deporte: {item.sport}</Text>
+                  </View>
+                </TouchableOpacity>
+              )
+            }}
             onScrollToIndexFailed={info => {
               flatListRef.current?.scrollToOffset({
                 offset: info.index * 112,

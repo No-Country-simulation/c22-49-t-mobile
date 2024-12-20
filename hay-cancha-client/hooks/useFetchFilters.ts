@@ -17,19 +17,22 @@ interface FilterResponse {
 }
 
 export default function useFetchFilters(params: {
-    location: string;
-    price: string;
-    players: string;
-    sport: string;
-  }) {
-    const [filters, setFilters] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        setLoading(true);
-        setError(null);
+  location: string;
+  price: string;
+  players: string;
+  sport: string;
+}) {
+  const [filters, setFilters] = useState<any[]>([]);
+  const [filteredData, setFilteredData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    console.log('Params recibidos en useFetchFilters:', params);
+
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
   
         try {
           // Simulación de datos de API
@@ -48,19 +51,26 @@ export default function useFetchFilters(params: {
             { name: 'Cancha 12', location: 'Barracas', price: '20000', players: '14', sport: 'Futbol', image: require('../assets/images/slider-fields/futbol5.png') },
             { name: 'Cancha 13', location: 'Barracas', price: '25000', players: '4', sport: 'Tenis', image: require('../assets/images/slider-fields/tenis2.png') },
           ];
+
+          console.log('Datos cargados:', data);
+
+          setFilters(data);
   
           // Filtrado de datos según parámetros
-          const filteredData = data.filter((item) => {
+          const initialFilteredData = data.filter((item) => {
             return (
-              (params.location ? item.location === params.location : true) &&
-              (params.players ? item.players === params.players : true) &&
-              (params.price ? item.price <= params.price : true) &&
-              (params.sport ? item.sport === params.sport : true)
+              (!params.location || item.location === params.location) &&
+              (!params.players || item.players === params.players) &&
+              (!params.price || item.price <= params.price) &&
+              (!params.sport || item.sport === params.sport)
             );
           });
+
+          console.log('Datos filtrados inicialmente:', initialFilteredData);
   
-          setFilters(filteredData);
+          setFilteredData(initialFilteredData);
         } catch (e) {
+          console.error('Error al cargar los datos:', e);
           setError('Error al cargar los datos');
         } finally {
           setLoading(false);
@@ -70,7 +80,7 @@ export default function useFetchFilters(params: {
       fetchData();
     }, [params]);
   
-    return { filters, loading, error };
+    return { filters, filteredData, loading, error };
   }
   
 
