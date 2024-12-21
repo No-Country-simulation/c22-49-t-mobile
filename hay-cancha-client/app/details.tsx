@@ -1,21 +1,23 @@
 import React, { useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
 import {
   View,
   Text,
   Image,
   StyleSheet,
   TouchableOpacity,
-  Alert
+  Modal
 } from 'react-native'
 import { Calendar, DateData } from 'react-native-calendars'
 import { useCourt } from '@/context/CourtContext'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { RootStackParamList, Court } from '@/types/navigationTypes'
+import { RootStackParamList } from '@/types/navigationTypes'
 
 type DetailsProps = NativeStackScreenProps<RootStackParamList, 'details'>
 
-export default function Details ({ route, navigation }: DetailsProps) {
+export default function Details ({ route }: DetailsProps) {
   const { selectedCourt } = useCourt()
+  const navigation = useNavigation()
 
   if (!selectedCourt) {
     return (
@@ -26,13 +28,35 @@ export default function Details ({ route, navigation }: DetailsProps) {
   }
   console.log('Court recibido:', selectedCourt)
   const [selectedDate, setSelectedDate] = useState<string>('')
+  const [disabledDates, setDisabledDates] = useState<{ [key: string]: any }>({})
+  const [modalVisible, setModalVisible] = useState(false)
+
+  if (!selectedCourt) {
+    return (
+      <View style={styles.container}>
+        <Text>No se pudo cargar la información de la cancha.</Text>
+      </View>
+    )
+  }
 
   const handleReserve = () => {
-    Alert.alert(
-      'Reserva Confirmada',
-      `Se ha reservado la cancha para el día ${selectedDate}. Se le ha enviado un correo con las indicaciones a seguir.`,
-      [{ text: 'OK', onPress: () => navigation.navigate('Home') }]
-    )
+    if (!selectedDate) {
+      setModalVisible(true) // Mostrar el modal de error si no hay fecha seleccionada
+      return
+    }
+
+    setDisabledDates(prev => ({
+      ...prev,
+      [selectedDate]: {
+        disabled: true,
+        disableTouchEvent: true,
+        //selected: true,
+        marked: true,
+        selectedColor: '#ff0000' // Rojo para indicar que está reservada
+      }
+    }))
+
+    setModalVisible(true)
   }
 
   return (
@@ -46,10 +70,11 @@ export default function Details ({ route, navigation }: DetailsProps) {
       <Calendar
         onDayPress={(day: DateData) => setSelectedDate(day.dateString)}
         markedDates={{
+          ...disabledDates,
           [selectedDate]: {
             selected: true,
             marked: true,
-            selectedColor: '#00adf5'
+            selectedColor: '#00adf5' // Azul para la fecha seleccionada
           }
         }}
       />
@@ -63,6 +88,50 @@ export default function Details ({ route, navigation }: DetailsProps) {
       >
         <Text style={styles.buttonText}>Reservar</Text>
       </TouchableOpacity>
+
+      {/* Modal */}
+      <Modal
+        animationType='slide'
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>
+              {selectedDate
+                ? 'Reserva Confirmada'
+                : 'Error: Fecha no seleccionada'}
+            </Text>
+            {selectedDate ? (
+              <Text style={styles.modalText}>
+                Se ha reservado la cancha para el día {selectedDate}. Se le ha
+                enviado un correo con las indicaciones.
+              </Text>
+            ) : (
+              <Text style={styles.modalText}>
+                Por favor selecciona una fecha antes de reservar.
+              </Text>
+            )}
+
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible(false)
+                if (selectedDate) {
+                  if (navigation?.navigate) {
+                    navigation.navigate('Home')
+                  } else {
+                    console.error('Error: navigation no está definido.')
+                  }
+                }
+              }}
+              style={styles.modalButton}
+            >
+              <Text style={styles.modalButtonText}>Cerrar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   )
 }
@@ -73,7 +142,34 @@ const styles = StyleSheet.create({
   title: { fontSize: 24, fontWeight: 'bold', marginBottom: 8 },
   button: { padding: 12, borderRadius: 8, alignItems: 'center', marginTop: 16 },
   buttonText: { color: '#fff', fontWeight: 'bold' },
-  errorText: { fontSize: 16, marginBottom: 16 }
+  errorText: { fontSize: 16, marginBottom: 16 },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)' // Fondo oscuro
+  },
+  modalContainer: {
+    width: '80%',
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  modalTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
+  modalText: { fontSize: 16, textAlign: 'center', marginBottom: 20 },
+  modalButton: {
+    backgroundColor: '#007bff',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center'
+  },
+  modalButtonText: { color: '#fff', fontWeight: 'bold' }
 })
 
 // import React, { useState } from 'react'
